@@ -3,7 +3,7 @@ from requests import get as rget
 from changeffapi import Loader
 
 NODESJSON = 'http://map.freifunk-mainz.de/nodes.json'
-FFAPIJSON = 'ffapi_wi.json'
+FFAPIJSON = 'ffapi_file.json'
 
 def scrape(url):
     '''returns remote json'''
@@ -23,9 +23,7 @@ if __name__ == '__main__':
             if node['flags']['online'] and node['name']:
                 online += 1
 
-        print('state,nodes => %s\n' %(loader.find(['state', 'nodes'])))
-
-        loader.set(['state', 'nodes'], online)
-        print('state,nodes => %s\n' %(loader.find(['state', 'nodes'])))
-
-        loader.dump(overwrite=True)
+        if online != int(loader.find(['state', 'nodes'])):
+            loader.set(['state', 'nodes'], online)
+            print('state,nodes => %s\n' %(loader.find(['state', 'nodes'])))
+            loader.dump(overwrite=True)

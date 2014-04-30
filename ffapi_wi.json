@@ -1,0 +1,81 @@
+{
+  "name": "Freifunk Wiesbaden",
+  "url": "http://www.freifunk-wiesbaden.de",
+  "location": {
+    "city": "Wiesbaden",
+    "country": "Germany",
+    "lat": 50.083117,
+    "lon": 8.2294,
+    "address": {
+      "Name": "cccmz",
+      "Street": "Sedanplatz 7",
+      "Zipcode": "65183"
+    }
+  },
+  "contact": {
+    "email": "kontakt@freifunk-wiesbaden.de",
+    "ml": "wiesbaden@freifunk.net",
+    "twitter": "@freifunkwi"
+  },
+  "metacommunity": "Freifunk-Mainz",
+  "state": {
+    "nodes": 5,
+    "message": "Wir sind noch neu hier",
+    "lastchange": "2014-03-26T22:10:33.384Z"
+  },
+  "timeline": [
+    {
+      "decription": "Freifunk Wiesbaden Kickoff",
+      "timestamp": "1384383600"
+    },
+    {
+      "decription": "Zweites Treffen",
+      "timestamp": "1389222000"
+    },
+    {
+      "decription": "Drittes Treffen",
+      "timestamp": "1392919200"
+    },
+    {
+      "decription": "Viertes Treffen",
+      "timestamp": "1396548000"
+    }
+  ],
+  "feeds": [
+    {
+      "name": "Freifunk Wiesbaden",
+      "category": "blog",
+      "type": "rss",
+      "url": "http://blog.freifunk-wiesbaden.de/feed"
+    }
+  ],
+  "nodeMaps": [
+    {
+      "url": "http://map.freifunk-wiesbaden.de/",
+      "interval": "0",
+      "technicalType": "ffmap",
+      "mapType": "structural"
+    }
+  ],
+  "techDetails": {
+    "stoererhaftung": "VPN Tunnel",
+    "bootstrap": "-",
+    "firmware": {
+      "url": "http://images.freifunk-wiesbaden.de",
+      "name": "Gluon"
+    },
+    "keyexchange": "Gluon",
+    "networks": {
+      "ipv4": [
+        {
+          "network": "10.56.0.0/16"
+        }
+      ]
+    },
+    "routing": "BATMAN",
+    "splashpage": "None",
+    "updatemode": "-",
+    "vpn": "fastd"
+  },
+  "api": "0.3.0"
+}

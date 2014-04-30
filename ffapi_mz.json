@@ -1,0 +1,66 @@
+{
+  "name": "Freifunk-Mainz e.V.",
+  "url": "https://www.freifunk-mainz.de",
+  "location": {
+    "city": "Mainz",
+    "country": "Germany",
+    "lat": 49.997071,
+    "lon": 8.278262,
+    "address": {
+      "Name": "Holzturm",
+      "Street": "Holzstraße-Ecke-Rheinstraße",
+      "Zipcode": "55116"
+    }
+  },
+  "contact": {
+    "email": "kontakt@freifunk-mainz.de",
+    "irc": "irc://irc.freenode.net/#freifunk-mainz",
+    "ml": "mainz@freifunk.net",
+    "facebook": "https://www.facebook.com/FreifunkMainz",
+    "twitter": "@freifunkmainz"
+  },
+  "state": {
+    "nodes": 42,
+    "message": "Wir suchen hohe Punkte in Mainz",
+    "lastchange": "2014-03-26T22:04:32.481Z"
+  },
+  "feeds": [
+    {
+      "name": "Freifunk-Mainz Blog",
+      "category": "blog",
+      "type": "RSS2",
+      "url": "http://blog.freifunk-mainz.de/feed/"
+    }
+  ],
+  "nodeMaps": [
+    {
+      "url": "http://map.freifunk-mainz.de/",
+      "interval": "5 Minutes",
+      "technicalType": "ffmap",
+      "mapType": "structural"
+    }
+  ],
+  "techDetails": {
+    "stoererhaftung": "VPN-Tunnel ins Ausland",
+    "bootstrap": "VPN Key per Mail",
+    "firmware": {
+      "url": "http://wiki.freifunk-mainz.de/",
+      "name": "OpenWRT Barrier Breaker"
+    },
+    "tld": {
+      "domainname": "ffmz"
+    },
+    "networks": {
+      "ipv4": [
+        {
+          "network": "10.37.0.0/16"
+        }
+      ]
+    },
+    "routing": "BATMAN",
+    "splashpage": "None",
+    "updatemode": "von Hand",
+    "vpn": "tinc"
+  },
+  "api": "0.3.0"
+}

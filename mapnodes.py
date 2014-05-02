@@ -27,11 +27,9 @@ if __name__ == '__main__':
                 if not node['flags']['client']:
                     nonclient += 1
 
-        if nonclient != int(loader.find(['state', 'nodes'])):
-            loader.set(['state', 'nodes'], nonclient)
-
             if len(argv) > 1:
-                print('state,nodes => %s' %(loader.find(['state', 'nodes'])))
                 print('Status: online: %d -> [nonclient: %d, client: %d]' %(online, nonclient, online-nonclient))
             else:
-                loader.dump(overwrite=True)
+                if nonclient != int(loader.find(['state', 'nodes'])):
+                    loader.set(['state', 'nodes'], nonclient)
+                    loader.dump(overwrite=True)

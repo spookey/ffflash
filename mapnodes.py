@@ -1,4 +1,5 @@
 
+from sys import argv
 from requests import get as rget
 from changeffapi import Loader
 
@@ -17,13 +18,20 @@ if __name__ == '__main__':
 
     if nodes:
         online = 0
+        nonclient = 0
         loader = Loader(FFAPIJSON)
 
         for node in nodes['nodes']:
-            if node['flags']['online'] and node['name']:
+            if node['flags']['online']:
                 online += 1
+                if not node['flags']['client']:
+                    nonclient += 1
 
-        if online != int(loader.find(['state', 'nodes'])):
-            loader.set(['state', 'nodes'], online)
-            print('state,nodes => %s\n' %(loader.find(['state', 'nodes'])))
-            loader.dump(overwrite=True)
+        if nonclient != int(loader.find(['state', 'nodes'])):
+            loader.set(['state', 'nodes'], nonclient)
+
+            if len(argv) > 1:
+                print('state,nodes => %s' %(loader.find(['state', 'nodes'])))
+                print('Status: online: %d -> [nonclient: %d, client: %d]' %(online, nonclient, online-nonclient))
+            else:
+                loader.dump(overwrite=True)

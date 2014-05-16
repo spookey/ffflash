@@ -8,11 +8,17 @@ from datetime import datetime
 def readin(filename):
     '''reads json'''
     try:
+        ffapi = str()
         if path.exists(filename):
-            with open(filename, 'r') as fn:
-                return loads(fn.read())
+            ffapi = filename
+        elif path.exists(path.join(path.abspath(path.dirname(__file__)), filename)):
+            ffapi = path.join(path.abspath(path.dirname(__file__)), filename)
         else:
             raise Exception('json file not found')
+
+        with open(ffapi, 'r') as fn:
+            return loads(fn.read())
+
     except Exception as ex:
         exit(ex)
 

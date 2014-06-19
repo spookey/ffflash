@@ -52,9 +52,9 @@
     "bootstrap": "VPN Key per Mail",
     "firmware": {
       "url": "http://wiki.freifunk-mainz.de/",
-      "name": "OpenWRT"
+      "name": "OpenWRT Barrier Breaker"
     },
-    "keyexchange": "Barrier Breaker",
+    "keyexchange": "",
     "tld": {
       "domainname": "ffmz.org"
     },

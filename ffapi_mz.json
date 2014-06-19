@@ -1,6 +1,6 @@
 {
-  "name": "Freifunk-Mainz e.V.",
-  "url": "https://www.freifunk-mainz.de",
+  "name": "Freifunk Mainz e.V.",
+  "url": "http://www.freifunk-mainz.de",
   "location": {
     "city": "Mainz",
     "country": "Germany",
@@ -8,7 +8,7 @@
     "lon": 8.278262,
     "address": {
       "Name": "Holzturm",
-      "Street": "Holzstraße-Ecke-Rheinstraße",
+      "Street": "Holzstraße (Ecke Rheinstraße)",
       "Zipcode": "55116"
     }
   },
@@ -16,14 +16,21 @@
     "email": "kontakt@freifunk-mainz.de",
     "irc": "irc://irc.freenode.net/#freifunk-mainz",
     "ml": "mainz@freifunk.net",
+    "identica": "https://identi.ca/freifunkmainz",
     "facebook": "https://www.facebook.com/FreifunkMainz",
     "twitter": "@freifunkmainz"
   },
   "state": {
-    "nodes": 42,
+    "nodes": 58,
     "message": "Wir suchen hohe Punkte in Mainz",
-    "lastchange": "2014-03-26T22:04:32.481Z"
+    "lastchange": "2014-06-19T11:34:39.527Z"
   },
+  "timeline": [
+    {
+      "decription": "Erste Linkstrecken-Tests über den Rhein. Erfolgreich!",
+      "timestamp": "1403115984"
+    }
+  ],
   "feeds": [
     {
       "name": "Freifunk-Mainz Blog",
@@ -35,7 +42,7 @@
   "nodeMaps": [
     {
       "url": "http://map.freifunk-mainz.de/",
-      "interval": "5 Minutes",
+      "interval": "jede Minute",
       "technicalType": "ffmap",
       "mapType": "structural"
     }
@@ -45,10 +52,11 @@
     "bootstrap": "VPN Key per Mail",
     "firmware": {
       "url": "http://wiki.freifunk-mainz.de/",
-      "name": "OpenWRT Barrier Breaker"
+      "name": "OpenWRT"
     },
+    "keyexchange": "Barrier Breaker",
     "tld": {
-      "domainname": "ffmz"
+      "domainname": "ffmz.org"
     },
     "networks": {
       "ipv4": [

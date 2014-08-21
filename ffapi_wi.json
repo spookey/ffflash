@@ -19,9 +19,9 @@
   },
   "metacommunity": "Freifunk-Mainz",
   "state": {
-    "nodes": 5,
-    "message": "Wir sind noch neu hier",
-    "lastchange": "2014-03-26T22:10:33.384Z"
+    "nodes": 7,
+    "message": "Geht gut an hier",
+    "lastchange": "1970-01-01T00:00:00.000Z"
   },
   "timeline": [
     {
@@ -51,7 +51,7 @@
   ],
   "nodeMaps": [
     {
-      "url": "http://map.freifunk-wiesbaden.de/",
+      "url": "http://map.freifunk-mainz.de/",
       "interval": "0",
       "technicalType": "ffmap",
       "mapType": "structural"
@@ -59,12 +59,12 @@
   ],
   "techDetails": {
     "stoererhaftung": "VPN Tunnel",
-    "bootstrap": "-",
+    "bootstrap": "von Hand",
     "firmware": {
-      "url": "http://images.freifunk-wiesbaden.de",
-      "name": "Gluon"
+      "url": "http://images.freifunk-mainz.de",
+      "name": "OpenWRT"
     },
-    "keyexchange": "Gluon",
+    "keyexchange": "per Mail",
     "networks": {
       "ipv4": [
         {
@@ -74,7 +74,7 @@
     },
     "routing": "BATMAN",
     "splashpage": "None",
-    "updatemode": "-",
+    "updatemode": "von Hand",
     "vpn": "fastd"
   },
   "api": "0.3.0"

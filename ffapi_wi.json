@@ -3,7 +3,7 @@
   "url": "http://www.freifunk-wiesbaden.de",
   "location": {
     "city": "Wiesbaden",
-    "country": "Germany",
+    "country": "DE",
     "lat": 50.083117,
     "lon": 8.2294,
     "address": {
@@ -17,28 +17,47 @@
     "ml": "wiesbaden@freifunk.net",
     "twitter": "@freifunkwi"
   },
-  "metacommunity": "Freifunk-Mainz",
+  "metacommunity": "Mainz",
   "state": {
-    "nodes": 7,
-    "message": "Geht gut an hier",
-    "lastchange": "1970-01-01T00:00:00.000Z"
+    "nodes": 64,
+    "focus": [
+      "infrastructure/backbone",
+      "Local services and content",
+      "Free internet access"
+    ],
+    "lastchange": "2014-08-22T18:51:07.817Z"
   },
+  "services": [
+    {
+      "serviceName": "nodegame",
+      "serviceDescription": "ffnodegame",
+      "externalUri": "http://nodegame.freifunk-wiesbaden.de/"
+    }
+  ],
   "timeline": [
     {
       "decription": "Freifunk Wiesbaden Kickoff",
-      "timestamp": "1384383600"
+      "timestamp": "2013-11-13"
     },
     {
       "decription": "Zweites Treffen",
-      "timestamp": "1389222000"
+      "timestamp": "2014-01-08"
     },
     {
       "decription": "Drittes Treffen",
-      "timestamp": "1392919200"
+      "timestamp": "2014-02-20"
     },
     {
       "decription": "Viertes Treffen",
-      "timestamp": "1396548000"
+      "timestamp": "2014-04-03"
+    },
+    {
+      "decription": "Fünftes Treffen",
+      "timestamp": "2014-06-24"
+    },
+    {
+      "decription": "Sechstes Treffen",
+      "timestamp": "2014-07-31"
     }
   ],
   "feeds": [
@@ -52,19 +71,17 @@
   "nodeMaps": [
     {
       "url": "http://map.freifunk-mainz.de/",
-      "interval": "0",
+      "interval": "1 min",
       "technicalType": "ffmap",
       "mapType": "structural"
     }
   ],
   "techDetails": {
-    "stoererhaftung": "VPN Tunnel",
-    "bootstrap": "von Hand",
     "firmware": {
-      "url": "http://images.freifunk-mainz.de",
-      "name": "OpenWRT"
+      "name": "OpenWRT",
+      "url": "https://images.freifunk-mainz.de/",
+      "docs": "https://wiki.freifunk-mainz.de/"
     },
-    "keyexchange": "per Mail",
     "networks": {
       "ipv4": [
         {
@@ -72,10 +89,15 @@
         }
       ]
     },
-    "routing": "BATMAN",
-    "splashpage": "None",
-    "updatemode": "von Hand",
-    "vpn": "fastd"
+    "routing": [
+      "batman-adv"
+    ],
+    "updatemode": [
+      "none"
+    ],
+    "legals": [
+      "vpninternational"
+    ]
   },
-  "api": "0.3.0"
+  "api": "0.4.1"
 }

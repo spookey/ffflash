@@ -1,9 +1,9 @@
 {
-  "name": "Freifunk Mainz e.V.",
-  "url": "http://www.freifunk-mainz.de",
+  "name": "Freifunk Mainz",
+  "url": "http://www.freifunk-mainz.de/",
   "location": {
     "city": "Mainz",
-    "country": "Germany",
+    "country": "DE",
     "lat": 49.997071,
     "lon": 8.278262,
     "address": {
@@ -20,10 +20,13 @@
     "facebook": "https://www.facebook.com/FreifunkMainz",
     "twitter": "@freifunkmainz"
   },
+  "metacommunity": "Wiesbaden",
   "state": {
-    "nodes": 58,
-    "message": "Wir suchen hohe Punkte in Mainz",
-    "lastchange": "2014-06-19T11:34:39.527Z"
+    "nodes": 0,
+    "focus": [
+      "Social Community Building"
+    ],
+    "lastchange": "2014-08-22T18:43:41.830Z"
   },
   "timeline": [
     {
@@ -48,15 +51,10 @@
     }
   ],
   "techDetails": {
-    "stoererhaftung": "VPN-Tunnel ins Ausland",
-    "bootstrap": "VPN Key per Mail",
     "firmware": {
-      "url": "http://wiki.freifunk-mainz.de/",
-      "name": "OpenWRT Barrier Breaker"
-    },
-    "keyexchange": "",
-    "tld": {
-      "domainname": "ffmz.org"
+      "name": "OpenWRT Barrier Breaker",
+      "url": "http://images.freifunk-mainz.de/",
+      "docs": "http://wiki.freifunk-mainz.de/"
     },
     "networks": {
       "ipv4": [
@@ -65,10 +63,15 @@
         }
       ]
     },
-    "routing": "BATMAN",
-    "splashpage": "None",
-    "updatemode": "von Hand",
-    "vpn": "tinc"
+    "routing": [
+      "batman-adv"
+    ],
+    "updatemode": [
+      "none"
+    ],
+    "legals": [
+      "vpninternational"
+    ]
   },
-  "api": "0.3.0"
+  "api": "0.4.1"
 }

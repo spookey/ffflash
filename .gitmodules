@@ -1,3 +1,0 @@
-[submodule "notify"]
-	path = notify
-	url = https://github.com/spookey/notify.git

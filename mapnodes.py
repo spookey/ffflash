@@ -7,7 +7,6 @@ from changeffapi import Loader
 NODESJSON = 'http://map.freifunk-mainz.de/nodes.json'
 FFAPIJSON = 'ffapi_file.json'
 
-TWEETRESULT = True
 
 def scrape(url):
     '''returns remote json'''
@@ -38,7 +37,3 @@ if __name__ == '__main__':
             if nonclient != int(loader.find(['state', 'nodes'])):
                 loader.set(['state', 'nodes'], nonclient)
                 loader.dump(overwrite=True)
-
-            if TWEETRESULT:
-                from notify.twitter import send_tweet
-                send_tweet(resultmsg)

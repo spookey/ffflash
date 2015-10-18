@@ -1,9 +1,9 @@
-
-from sys import exit
-from os import path
-from json import loads, dumps
-from time import time
 from datetime import datetime
+from json import dumps, loads
+from os import path
+from sys import exit
+from time import time
+
 
 def readin(filename):
     '''reads json'''
@@ -11,7 +11,10 @@ def readin(filename):
         ffapi = str()
         if path.exists(filename):
             ffapi = filename
-        elif path.exists(path.join(path.abspath(path.dirname(__file__)), filename)):
+        elif path.exists(path.join(
+                path.abspath(path.dirname(__file__)),
+                filename)
+        ):
             ffapi = path.join(path.abspath(path.dirname(__file__)), filename)
         else:
             raise Exception('json file not found')
@@ -22,6 +25,7 @@ def readin(filename):
     except Exception as ex:
         exit(ex)
 
+
 def writeout(filename, content):
     '''writes json'''
     try:
@@ -30,11 +34,13 @@ def writeout(filename, content):
     except Exception as ex:
         exit(ex)
 
+
 def tstamp(short=False):
     '''get timestamp'''
     if short:
         return int(time())
     return datetime.now().isoformat('T')
+
 
 class Loader(object):
     '''replace existing fields'''
@@ -46,7 +52,9 @@ class Loader(object):
     def dump(self, overwrite=False):
         '''writes ffapi'''
         if self.ffapi:
-            filename = self.filename if overwrite else self.filename.replace('.json', '_change.json')
+            filename = self.filename if overwrite else self.filename.replace(
+                '.json', '_change.json'
+            )
             self.set(['state', 'lastchange'], tstamp(short=False))
             return writeout(filename, self.ffapi)
 
@@ -75,10 +83,9 @@ class Loader(object):
 if __name__ == '__main__':
     loader = Loader('ffapi_file.json')
 
-    print('name => %s\n' %(loader.find(['name'])))
-    print('location,city => %s\n' %(loader.find(['location', 'city'])))
+    print('name => %s\n' % (loader.find(['name'])))
+    print('location,city => %s\n' % (loader.find(['location', 'city'])))
 
     loader.set(['api'], '1.2.3')
 
     loader.dump(overwrite=False)
-

@@ -1,7 +1,5 @@
-
-from sys import argv
-from datetime import datetime
 from requests import get as rget
+
 from changeffapi import Loader
 
 NODESJSON = 'http://map.freifunk-mainz.de/nodes.json'
@@ -13,7 +11,7 @@ def scrape(url):
     try:
         return rget(url).json()
     except Exception as ex:
-        print('Error: %s' %(ex))
+        print('Error: %s' % (ex))
 
 if __name__ == '__main__':
     nodes = scrape(NODESJSON)
@@ -28,12 +26,7 @@ if __name__ == '__main__':
                 if not node['flags']['client']:
                     nonclient += 1
 
-        now = datetime.now().strftime('%H:%M %d.%m.%Y')
-        resultmsg = 'Status: online: %d (%d Router, %d Teilnehmer) %s' %(online, nonclient, online-nonclient, now)
-        if len(argv) > 1:
-            print(resultmsg)
-        else:
-            loader = Loader(FFAPIJSON)
-            if nonclient != int(loader.find(['state', 'nodes'])):
-                loader.set(['state', 'nodes'], nonclient)
-                loader.dump(overwrite=True)
+        loader = Loader(FFAPIJSON)
+        if nonclient != int(loader.find(['state', 'nodes'])):
+            loader.set(['state', 'nodes'], nonclient)
+            loader.dump(overwrite=True)

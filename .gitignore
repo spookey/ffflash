@@ -1,5 +1,1 @@
-
-*.json
-
-__pycache__
-__*
+*.pyc

@@ -1,80 +1,48 @@
-from os import path
-
 from ffflash import log, now, timeout
-from ffflash.lib.clock import epoch_repr
-from ffflash.lib.files import read_json_file, write_json_file
 from ffflash.poll import poll
+from ffflash.container import Container
 
 
-class Storage:
+class Storage(Container):
     def __init__(self, storage):
-        self._storage = path.abspath(storage)
-        self.data = read_json_file(self._storage, fallback={})
-        self.data['nodes'] = self.data.get('nodes', {})
-        self._info()
+        super(Storage, self).__init__('storage', storage)
 
-    def _info(self):
-        self.data['_info'] = self.data.get('_info', {})
-
-        self.data['_info']['access'] = self.data['_info'].get('access', {})
-        if not self.data['_info']['access'].get('first', False):
-            self.data['_info']['access']['first'] = now
-        self.data['_info']['access']['last'] = now
-        self.data['_info']['access']['overall'] = epoch_repr(
-            abs(now - self.data['_info']['access']['first']),
-            ms=True
-        )
-        self.data['_info']['sums'] = self.data['_info'].get('sums', {})
-        self.data['_info']['sums']['nodes'] = len(self.data['nodes'])
-        self.data['_info']['sums']['clients'] = sum([
-            max(n.get('clients_wifi'), n.get('clients_total')) for
-            n in self.data['nodes'].values()
-        ])
-        self.data['_info']['sums']['reboots'] = sum([
-            n.get('reboots') for n in self.data['nodes'].values()
-        ])
-
-    def save(self):
-        self._info()
-        if write_json_file(self._storage, self.data):
-            log.info('storage saved {}'.format(self._storage))
-
-    def update(self):
-        changes = {}
-
-        def _change(field, nid, data):
-            node = self.data['nodes'][nid]
-            hostname = node.get('hostname')
-            old = node.get(field)
-            new = data.get(field)
-            self.data['nodes'][nid][field] = new
-            if old and old != new:
-                log.info('node change {} {}: {} {}'.format(
-                    field, hostname, old, new
-                ), end='\r')
-                changes[field] = changes.get(field, {})
-                changes[field][nid] = {
-                    'hostname': hostname, 'new': new, 'old': old
-                }
-
-        remove = [
+    def _prepare_nodes(self):
+        lost = {}
+        outdated = [
             nid for nid, node in self.data['nodes'].items() if
             not node.get('last_seen') or node['last_seen'] < timeout
         ]
-        for rem in remove:
+        for rem in outdated:
             node = self.data['nodes'][rem]
             hostname = node.get('hostname')
-            changes['lost'] = changes.get('lost', {})
-            changes['lost'][rem] = {
+            lost[rem] = {
                 'hostname': hostname, 'new': None, 'old': node.get('last_seen')
             }
             log.info('node change timeout {}'.format(hostname), end='\r')
 
         self.data['nodes'] = dict(
             (nid, node) for nid, node in self.data['nodes'].items() if
-            nid not in remove and not node.update({'online': False})
+            nid not in outdated and not node.update({'online': False})
         )
+        return lost
 
+    def _change_node(self, field, nid, data, changes):
+        node = self.data['nodes'][nid]
+        hostname = node.get('hostname')
+        old = node.get(field)
+        new = data.get(field)
+        self.data['nodes'][nid][field] = new
+        if old and old != new:
+            log.info('node change {} {}: {} {}'.format(
+                field, hostname, old, new
+            ), end='\r')
+            changes[field] = changes.get(field, {})
+            changes[field][nid] = {
+                'hostname': hostname, 'new': new, 'old': old
+            }
+
+    def _update_nodes(self, changes):
         for node_id, node in poll():
             hostname = node.get('hostname')
             if node_id not in self.data['nodes'].keys():
@@ -97,10 +65,38 @@ class Storage:
                 changes['reboots'][node_id] = {
                     'hostname': hostname, 'new': node['uptime'], 'old': uptime
                 }
-            [_change(field, node_id, node) for field in node.keys()]
+            [self._change_node(
+                field, node_id, node, changes
+            ) for field in node.keys()]
+        return changes
+
+    def _gen_info(self):
+        info = {
+            'sums': self.data['_info'].get('sums', {})
+        }
+        info['sums']['nodes'] = len(self.data['nodes'])
+        info['sums']['clients'] = sum([
+            max(n.get('clients_wifi'), n.get('clients_total')) for
+            n in self.data['nodes'].values()
+        ])
+        info['sums']['reboots'] = sum([
+            n.get('reboots') for n in self.data['nodes'].values()
+        ])
+        return info
+
+    def update(self):
+        changes = {}
+
+        lost = self._prepare_nodes()
+        if lost:
+            changes['lost'] = lost
+
+        changes = self._update_nodes(changes)
 
         log.info(' ' * 80, end='\r')
         log.info('update done')
         if self.data['nodes']:
-            self.save()
+            self.save(
+                info=self._gen_info()
+            )
         return changes

@@ -10,6 +10,9 @@ now = epoch_tstamp(ms=True)
 timeout = epoch_tstamp(rel=float(args.timeout), ms=True)
 
 CODING = 'UTF-8'
+VERSION = '0.0'
+release = 'a0'
+RELEASE = '{}{}'.format(VERSION, release)
 
 from ffflash.main import main
 

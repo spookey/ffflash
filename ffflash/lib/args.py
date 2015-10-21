@@ -78,8 +78,6 @@ def main_args(argv):
 
 
 def spock(args, log):
-    if any([args.sudo, args.ssh]) and not args.asock:
-        log.warn('ignoring sudo or ssh - no alfred socket given')
     if not args.store:
         log.error('no storage file given')
         return False

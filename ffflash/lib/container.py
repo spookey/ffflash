@@ -26,7 +26,7 @@ class Container:
             abs(now - self.data['_info']['access']['first']),
             ms=True
         )
-        self.data['_info']['access']['timeout'] = timeout
+        self.data['_info']['access']['scrub'] = timeout
 
         if info:
             self.data['_info'] = merge_dicts(self.data['_info'], info)

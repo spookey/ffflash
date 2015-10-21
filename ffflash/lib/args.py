@@ -63,7 +63,7 @@ def main_args(argv):
     )
     parser.add_argument(
         '--rignore', nargs='*', default=[
-            'clients_total', 'clients_wifi', 'uptime'
+            'clients_total', 'clients_wifi', 'gateway', 'uptime'
         ], help='ignore these fields in recent file'
     )
     parser.add_argument(

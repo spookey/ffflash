@@ -1,11 +1,12 @@
 from ffflash import log, now, timeout
+from ffflash.lib.container import Container
 from ffflash.poll import poll
-from ffflash.container import Container
 
 
 class Storage(Container):
     def __init__(self, storage):
         super(Storage, self).__init__('storage', storage)
+        self.data['nodes'] = self.data.get('nodes', {})
 
     def _prepare_nodes(self):
         lost = {}

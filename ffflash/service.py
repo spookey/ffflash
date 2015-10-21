@@ -1,25 +1,27 @@
-from os import path
-
-from ffflash import args, log, now, timeout
-from ffflash.lib.files import read_json_file, write_json_file
+from ffflash import args, now, timeout
+from ffflash.lib.container import Container
 
 
 def recent(changes):
-    recent_file = path.abspath(args.recent)
-    current = read_json_file(recent_file, fallback={})
+    container = Container('recent', args.recent)
+    info = {'recent': {}}
 
-    for field, values in changes.items():
+    for field, data in changes.items():
         if field not in args.rignore:
-            current[field] = current.get(field, {})
-            for nid, data in values.items():
-                data.update({'time': now})
-                current[field][nid] = data
+            container.data[field] = container.data.get(field, {})
+            info['recent'][field] = info['recent'].get(field, 0)
 
-    current = dict(
+            for nid, message in data.items():
+                message.update({'time': now})
+                container.data[field][nid] = message
+                info['recent'][field] += 1
+
+    container.data = dict(
         (field, dict(
-            (nid, data) for nid, data in values.items() if
-            data.get('time') and data['time'] > timeout
-        )) for field, values in current.items()
+            (nid, msg) for nid, msg in data.items() if
+            msg.get('time') and msg['time'] > timeout
+        )) for field, data in container.data.items() if
+        not field.startswith('_')
     )
-    write_json_file(recent_file, current)
-    log.info('written recent {}'.format(recent_file))
+
+    container.save(info=info)

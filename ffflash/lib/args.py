@@ -72,7 +72,7 @@ def main_args(argv):
     )
     parser.add_argument(
         '-raw', '--raw', action='store',
-        help='keep raw input files in this folder, or read them from there'
+        help='keep raw input in this files, or read it from there'
     )
     return parser.parse_args(argv)
 

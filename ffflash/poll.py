@@ -32,9 +32,8 @@ def alfred():
             return
         result = merge_dicts(result, new)
     if args.raw:
-        raw_file = path.join(path.abspath(args.raw), 'alfred_result.json')
-        write_json_file(raw_file, result)
-        log.info('written raw file {}'.format(raw_file))
+        write_json_file(path.abspath(args.raw), result)
+        log.info('written raw file {}'.format(args.raw))
     return result
 
 
@@ -44,8 +43,7 @@ def collect():
     if args.asock:
         return alfred()
     if args.raw:
-        raw_file = path.join(path.abspath(args.raw), 'alfred_result.json')
-        return read_json_file(raw_file, fallback={})
+        return read_json_file(path.abspath(args.raw), fallback={})
 
 
 def poll():

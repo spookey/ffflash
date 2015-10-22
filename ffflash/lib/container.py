@@ -2,7 +2,7 @@ from os import path
 
 from ffflash import RELEASE, log, now, timeout
 from ffflash.lib.clock import epoch_repr
-from ffflash.lib.data import merge_dicts
+from ffflash.lib.data import Element
 from ffflash.lib.files import read_json_file, write_json_file
 
 
@@ -10,28 +10,28 @@ class Container:
     def __init__(self, spec, filename):
         self._spec = spec
         self._location = path.abspath(filename)
-        self.data = read_json_file(self._location, fallback={})
 
-        self._info()
+        content = read_json_file(self._location, fallback={})
 
-    def _info(self, info={}):
-        self.data['_info'] = self.data.get('_info', {})
-        self.data['_info']['generator'] = RELEASE
+        self.info = Element(content.get('_info', {}))
+        self.data = Element(content.get(self._spec, {}))
 
-        self.data['_info']['access'] = self.data['_info'].get('access', {})
-        if not self.data['_info']['access'].get('first', False):
-            self.data['_info']['access']['first'] = now
-        self.data['_info']['access']['last'] = now
-        self.data['_info']['access']['overall'] = epoch_repr(
-            abs(now - self.data['_info']['access']['first']),
-            ms=True
+    def _info(self):
+        self.info.generator = RELEASE
+
+        if not self.info.access.first:
+            self.info.access.first = now
+        self.info.access.last = now
+        self.info.access.overall = epoch_repr(
+            abs(now - self.info.access.first), ms=True
         )
-        self.data['_info']['access']['scrub'] = timeout
+        self.info.access.scrub = timeout
 
-        if info:
-            self.data['_info'] = merge_dicts(self.data['_info'], info)
-
-    def save(self, info={}):
-        self._info(info)
-        if write_json_file(self._location, self.data):
+    def save(self):
+        self._info()
+        content = {
+            '_info': self.info,
+            self._spec: self.data
+        }
+        if write_json_file(self._location, content):
             log.info('{} saved {}'.format(self._spec, self._location))

@@ -1,7 +1,7 @@
 from os import path
 
 from ffflash import args, log
-from ffflash.lib.data import load_json, merge_dicts
+from ffflash.lib.data import Element, load_json, merge_dicts
 from ffflash.lib.files import read_json_file, write_json_file
 from ffflash.lib.shell import construct_alfred_command, launch
 
@@ -56,30 +56,22 @@ def poll():
     if fresh:
         for key, data in fresh.items():
             node_id = data.get('node_id', key.replace(':', ''))
-            hostname = data.get('hostname')
-            if not all([node_id, hostname]):
+            node = Element(data)
+            if not all([node_id, node.hostname]):
                 continue
 
-            clients = data.get('clients', {})
-            hardware = data.get('hardware', {})
-            software = data.get('software', {})
-            system = data.get('system', {})
-
-            batman_adv = software.get('batman-adv', {})
-            autoupdater = software.get('autoupdater', {})
-            fastd = software.get('fastd', {})
-            firmware = software.get('firmware', {})
-
-            yield node_id, {
-                'batman_version': batman_adv.get('version'),
-                'clients_total': clients.get('total', 0),
-                'clients_wifi': clients.get('wifi', 0),
-                'gateway': data.get('gateway'),
-                'hostname': hostname,
-                'release': firmware.get('release'),
-                'fastd_uplink': fastd.get('enabled', False),
-                'model': hardware.get('model'),
-                'role': system.get('role'),
-                'branch': autoupdater.get('branch'),
-                'uptime': 1000 * data.get('uptime', 0),
-            }
+            yield node_id, Element({
+                'batman_version': node.software['batman-adv'].get(
+                    'version', None
+                ),
+                'clients_total': node.clients.get('total', 0),
+                'clients_wifi': node.clients.get('wifi', 0),
+                'gateway': node.get('gateway', None),
+                'hostname': node.hostname,
+                'release': node.software.firmware.get('release', None),
+                'fastd_uplink': node.software.fastd.get('enabled', False),
+                'model': node.hardware.get('model', None),
+                'role': node.system.get('role', None),
+                'branch': node.software.autoupdater.get('branch', None),
+                'uptime': 1000 * node.get('uptime', 0),
+            })

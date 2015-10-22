@@ -14,41 +14,38 @@ def announced():
     return result
 
 
-def _ask_alfred(cmdline, so_far={}):
+def _ask_alfred(cmdline):
     with launch(cmdline) as (code, out, err):
         if code == 0 and out:
             with load_json(out, fallback={}) as data:
-                return merge_dicts(so_far, data), data
-        log.error('wrong alfred data {}'.format(err))
-    return so_far, {}
+                return data
+        log.error('error in alfred data {}'.format(err))
 
 
 def alfred():
     result = {}
     for channel in args.achannels:
         cmdline = construct_alfred_command(channel)
-        result, raw = _ask_alfred(cmdline, result)
-        if raw and args.raw:
-            write_json_file(
-                path.join(args.raw, 'alfred{}.json'.format(channel)), raw
-            )
-    if result and args.raw:
-        write_json_file(
-            path.join(args.raw, 'alfred_result.json'), result
-        )
+        new = _ask_alfred(cmdline)
+        if not new:
+            log.error('could not fetch data for channel {}'.format(channel))
+            return
+        result = merge_dicts(result, new)
+    if args.raw:
+        raw_file = path.join(path.abspath(args.raw), 'alfred_result.json')
+        write_json_file(raw_file, result)
+        log.info('written raw file {}'.format(raw_file))
     return result
 
 
 def collect():
     if all([args.dsock, args.dbatif]):
         return announced()
-    elif args.asock:
+    if args.asock:
         return alfred()
-    elif args.raw:
-        return read_json_file(
-            path.join(args.raw, 'alfred_result.json')
-        )
-    return {}
+    if args.raw:
+        raw_file = path.join(path.abspath(args.raw), 'alfred_result.json')
+        return read_json_file(raw_file, fallback={})
 
 
 def poll():

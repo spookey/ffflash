@@ -1,8 +1,8 @@
 from ffflash import args, log
 from ffflash.lib.args import spock
+from ffflash.poll import poll
 from ffflash.service import recent
 from ffflash.store import Storage
-from ffflash.poll import poll
 
 
 def main():

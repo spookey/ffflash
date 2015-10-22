@@ -28,6 +28,10 @@ class Container:
         self.info.access.scrub = timeout
 
     def save(self):
+        if not self.data:
+            log.warn('skipped {} save - empty data'.format(self._spec))
+            return
+
         self._info()
         content = {
             '_info': self.info,

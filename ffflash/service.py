@@ -1,26 +1,26 @@
 from ffflash import args, now, timeout
 from ffflash.lib.container import Container
+from ffflash.lib.data import Element
 
 
 def recent(changes):
-    container = Container('recent', args.recent)
-    info = {'recent': {}}
+    cnt = Container('recent', args.recent)
 
-    for field, data in changes.items():
-        if field not in args.rignore:
-            container.data[field] = container.data.get(field, {})
-            info['recent'][field] = info['recent'].get(field, 0)
-            for nid, message in data.items():
-                message.update({'time': now})
-                container.data[field][nid] = message
-                info['recent'][field] += 1
+    if changes:
+        cnt.info.current = {}
+        for field, data in changes.items():
+            if field not in args.rignore:
+                cnt.info.current[field] = cnt.info.current.get(field, 0)
+                for node_id, message in data.items():
+                    message['time'] = now
+                    cnt.data[field][node_id] = message
+                    cnt.info.current[field] += 1
 
-    container.data = dict(
-        (field, dict(
-            (nid, msg) for nid, msg in data.items() if
-            msg.get('time') and msg['time'] > timeout
-        )) for field, data in container.data.items() if
-        not field.startswith('_')
-    )
+    clean = Element()
+    for field, data in cnt.data.items():
+        for node_id, message in data.items():
+            if message.get('time', 0) > timeout:
+                clean[field][node_id] = message
 
-    container.save(info=info)
+    cnt.data = clean
+    cnt.save()

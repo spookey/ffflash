@@ -10,7 +10,6 @@ def recent(changes):
         if field not in args.rignore:
             container.data[field] = container.data.get(field, {})
             info['recent'][field] = info['recent'].get(field, 0)
-
             for nid, message in data.items():
                 message.update({'time': now})
                 container.data[field][nid] = message

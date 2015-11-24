@@ -1,8 +1,6 @@
-from pprint import pprint
-
-from .api import FFApi
-from .lib.files import dump_file, load_file
+from .lib.api import FFApi
 from .lib.args import args
+from .lib.files import dump_file, load_file
 from .nodelist import handle_nodelist
 from .sidecars import handle_sidecars
 
@@ -31,13 +29,12 @@ class FFFlash:
 def main(argv=None):
     ff = FFFlash(argv)
     modified = [
-        handle_nodelist(ff),
-        handle_sidecars(ff)
+        handle_sidecars(ff),
+        handle_nodelist(ff)
     ]
 
     if ff.args.dry:
-        ff.log('dry option selected  - preview')
-        pprint(ff.api.c)
+        ff.log('\n{}'.format(ff.api.show()), level='API file preview')
     else:
         if any(modified):
             ff.log('saving api file')

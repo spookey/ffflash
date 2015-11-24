@@ -1,18 +1,17 @@
 from os import path
 
-from .lib.files import dump_file, load_file
+from .lib.files import check_file_location, dump_file, load_file
 from .lib.struct import merge_dicts
 
 
 def _sidecar_path(ff, sc):
     ff.log('handling sidecar {}'.format(sc))
-    sidepath = path.abspath(sc)
-    sideparent = path.dirname(sidepath)
 
-    if not path.isdir(sideparent) or path.isdir(sidepath):
+    sidepath = check_file_location(sc)
+    if not sidepath:
         return ff.log(
-            'sidecar is either a folder, or parent folder does '
-            'not exist yet {}. skipping {}'.format(sidepath, sc),
+            'sidecar {} is either a folder, or parent folder does '
+            'not exist yet skipping'.format(sc),
             level=False
         ), None, None
 

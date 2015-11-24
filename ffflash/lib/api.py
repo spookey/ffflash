@@ -1,4 +1,5 @@
 from datetime import datetime
+from pprint import pformat
 
 
 class FFApi:
@@ -8,7 +9,7 @@ class FFApi:
         def pull(self, *fields):
             c = self.c
             for f in fields:
-                if f in c.keys():
+                if isinstance(c, dict) and f in c.keys():
                     if f == fields[-1]:
                         return c[f]
                     c = c[f]
@@ -16,7 +17,7 @@ class FFApi:
         def push(self, value, *fields):
             c = self.c
             for f in fields:
-                if f in c.keys():
+                if isinstance(c, dict) and f in c.keys():
                     if f == fields[-1]:
                         c[f] = value
                     c = c[f]
@@ -24,6 +25,9 @@ class FFApi:
         def timestamp(self):
             if self.pull('state', 'lastchange') is not None:
                 self.push(api_timestamp(), 'state', 'lastchange')
+
+        def show(self):
+            return pformat(self.c)
 
 
 def api_timestamp(dt=None):

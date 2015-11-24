@@ -18,14 +18,13 @@ def parsed_args(argv=None):
         help='URL to map\'s nodelist.json, updates nodes count'
     )
     p.add_argument(
-        '-s', '--sidecars', nargs='*',
+        '-s', '--sidecars', nargs='+',
         help='sync updates from/with sidecar files'
     )
     p.add_argument(
         '-d', '--dry', action='store_true',
         help='do not save output, displays only a preview'
     )
-
     p.add_argument(
         '-v', '--verbose', action='store_true',
         help='show verbose output'

@@ -38,8 +38,10 @@ def api_timestamp(dt=None):
     return dt.isoformat('T')
 
 
-def api_descr(rx, rplc, txt):
-    match = re_search(rx, txt)
-    if match:
-        txt = re_sub(rx, rplc, txt)
-    return txt
+def api_descr(rx, replace, text):
+    match = (
+        False if not (rx and text) else re_search(rx, text)
+    )
+    if match and replace:
+        text = re_sub(rx, replace, text)
+    return text

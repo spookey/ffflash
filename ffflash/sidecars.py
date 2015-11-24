@@ -36,6 +36,9 @@ def _sidecar_path(ff, sc):
 
 
 def _sidecar_load(ff, sidepath, fields, as_yaml):
+    if ff.api is None:
+        return False
+
     ff.log('searching for {}'.format('.'.join(fields)))
 
     apicont = ff.api.pull(*fields)
@@ -53,6 +56,9 @@ def _sidecar_load(ff, sidepath, fields, as_yaml):
 
 
 def _sidecar_dump(ff, sidepath, content, fields, as_yaml):
+    if ff.api is None:
+        return False
+
     if ff.api.pull(*fields) is None:
         return ff.log(
             '{} does not exist. can\'t push'.format('.'.join(fields)),

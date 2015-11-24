@@ -46,6 +46,9 @@ def _nodelist_count(ff, nodelist):
 
 
 def _nodelist_dump(ff, nodes, clients):
+    if ff.api is None:
+        return False
+
     modified = []
     if ff.api.pull('state', 'nodes') is not None:
         ff.api.push(nodes, 'state', 'nodes')

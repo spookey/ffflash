@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from sys import argv as _argv
 
 
-def args(argv=None):
+def parsed_args(argv=None):
     p = ArgumentParser(
         prog='ffflash',
         description='',

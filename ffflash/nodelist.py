@@ -1,29 +1,32 @@
-from json import loads
-from socket import gaierror
-from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
+from .lib.remote import www_fetch
+from .lib.struct import load
 
 
 def _nodelist_fetch(ff):
     ff.log('fetching nodelist {}'.format(ff.args.nodelist))
 
-    try:
-        resp = urlopen(ff.args.nodelist)
-        data = resp.read().decode('utf-8')
-        nodelist = loads(data)
-    except (HTTPError, URLError, gaierror, ValueError) as ex:
-        return ff.log(
-            'could not fetch nodelist {} {}'.format(ff.args.nodelist, ex),
-            level=False
-        )
+    with www_fetch(ff.args.nodelist, fallback=None) as data:
+        if not data:
+            return ff.log(
+                'could not fetch nodelist {} {}'.format(ff.args.nodelist),
+                level=False
+            )
 
-    if not all([nodelist.get(a) for a in ['version', 'nodes', 'updated_at']]):
-        return ff.log(
-            'this is no nodelist. wrong format',
-            level=False
-        )
+        with load(data, fallback=None, as_yaml=False) as nodelist:
+            if not nodelist:
+                return ff.log(
+                    'could not unload nodelist {}'.format(ff.args.nodelist)
+                )
 
-    return nodelist
+            if not all([
+                nodelist.get(a) for a in ['version', 'nodes', 'updated_at']
+            ]):
+                return ff.log(
+                    'this is no nodelist. wrong format',
+                    level=False
+                )
+
+            return nodelist
 
 
 def _nodelist_count(ff, nodelist):

@@ -39,6 +39,7 @@ class FFFlash:
         self.api = self.FFApi(c)
 
     def save(self):
+        self.api.timestamp()
         return dump_file(self.args.APIfile, self.api.c, as_yaml=False)
 
     def log(self, message, level=True):
@@ -64,7 +65,6 @@ def main(argv=None):
     else:
         if any(modified):
             ff.log('saving api file')
-            ff.api.timestamp()
             ff.save()
 
     return not any(modified)

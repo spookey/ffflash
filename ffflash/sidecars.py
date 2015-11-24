@@ -13,7 +13,7 @@ def _sidecar_path(ff, sc):
         return ff.log(
             'sidecar is either a folder, or parent folder does '
             'not exist yet {}. skipping {}'.format(sidepath, sc),
-            level=None
+            level=False
         ), None, None
 
     sidename = path.basename(sidepath)
@@ -22,7 +22,7 @@ def _sidecar_path(ff, sc):
     if not ext or ext.lower() not in ['.yaml', '.json']:
         return ff.log(
             'sidecar {} {} is neither json nor yaml'.format(sc, ext),
-            level=None
+            level=False
         ), None, None
 
     fields = name.split('.')
@@ -30,7 +30,7 @@ def _sidecar_path(ff, sc):
         return ff.log(
             'sidecar {} {} name is invalid '
             '(check for double dots)'.format(sc, name),
-            level=None
+            level=False
         ), None, None
 
     return sidepath, fields, (True if ext == '.yaml' else False)
@@ -43,7 +43,7 @@ def _sidecar_load(ff, sidepath, fields, as_yaml):
     if apicont is None:
         return ff.log(
             '{} does not exist. skipping'.format('.'.join(fields)),
-            level=None
+            level=False
         )
 
     sidecont = load_file(sidepath, as_yaml=as_yaml)
@@ -54,17 +54,23 @@ def _sidecar_load(ff, sidepath, fields, as_yaml):
 
 
 def _sidecar_dump(ff, sidepath, content, fields):
-    ff.api.push(content, *fields)
+    if ff.api.pull(*fields) is None:
+        return ff.log(
+            '{} does not exist. can\'t push'.format('.'.join(fields)),
+            level=False
+        )
 
-    ff.log('saving sidecar {}'.format(sidepath))
+    ff.api.push(content, *fields)
     dump_file(sidepath, content)
+    ff.log('saved sidecar {}'.format(sidepath))
+    return True
 
 
 def handle_sidecars(ff):
     if not ff.args.sidecars:
         return False
 
-    modified = False
+    modified = []
 
     for sidecar in sorted(ff.args.sidecars):
 
@@ -73,10 +79,11 @@ def handle_sidecars(ff):
             continue
 
         content = _sidecar_load(ff, sidepath, fields, as_yaml)
-        if content is None:
+        if not content:
             continue
 
-        _sidecar_dump(ff, sidepath, content, fields)
-        modified = True
+        modified.append(
+            _sidecar_dump(ff, sidepath, content, fields)
+        )
 
-    return modified
+    return any(modified)

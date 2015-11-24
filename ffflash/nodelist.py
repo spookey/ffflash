@@ -11,18 +11,16 @@ def _nodelist_fetch(ff):
         resp = urlopen(ff.args.nodelist)
         data = resp.read().decode('utf-8')
         nodelist = loads(data)
-    except (
-        HTTPError, URLError, gaierror, ValueError
-    ):
+    except (HTTPError, URLError, gaierror, ValueError) as ex:
         return ff.log(
-            'could not fetch nodelist {}'.format(ff.args.nodelist),
-            level=None
+            'could not fetch nodelist {} {}'.format(ff.args.nodelist, ex),
+            level=False
         )
 
     if not all([nodelist.get(a) for a in ['version', 'nodes', 'updated_at']]):
         return ff.log(
-            'this is no nodelist - wrong format',
-            level=None
+            'this is no nodelist. wrong format',
+            level=False
         )
 
     return nodelist
@@ -38,7 +36,7 @@ def _nodelist_count(ff, nodelist):
     ff.log('found {} nodes, {} clients'.format(nodes, clients))
 
     if not all([nodes, clients]):
-        return ff.log('your nodelist seems to be empty', level=None), None
+        ff.log('your nodelist seems to be empty', level=False)
 
     return nodes, clients
 
@@ -64,7 +62,7 @@ def handle_nodelist(ff):
         return False
 
     nodelist = _nodelist_fetch(ff)
-    if nodelist is None:
+    if not nodelist:
         return False
 
     nodes, clients = _nodelist_count(ff, nodelist)

@@ -14,5 +14,5 @@ def main():
     fresh = poll()
     changes = storage.update(fresh)
 
-    if changes and args.recent:
+    if args.recent:
         recent(changes)

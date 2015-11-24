@@ -26,6 +26,7 @@ class Container:
             abs(now - self.info.access.first), ms=True
         )
         self.info.access.scrub = timeout
+        self.info.access.spec = self._spec
 
     def save(self):
         if not self.data:

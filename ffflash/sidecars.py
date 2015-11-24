@@ -1,7 +1,7 @@
 from os import path
 
 from .lib.files import dump_file, load_file
-from .lib.service import merge_dicts
+from .lib.struct import merge_dicts
 
 
 def _sidecar_path(ff, sc):
@@ -53,7 +53,7 @@ def _sidecar_load(ff, sidepath, fields, as_yaml):
     return merge_dicts(apicont, sidecont)
 
 
-def _sidecar_dump(ff, sidepath, content, fields):
+def _sidecar_dump(ff, sidepath, content, fields, as_yaml):
     if ff.api.pull(*fields) is None:
         return ff.log(
             '{} does not exist. can\'t push'.format('.'.join(fields)),
@@ -61,7 +61,7 @@ def _sidecar_dump(ff, sidepath, content, fields):
         )
 
     ff.api.push(content, *fields)
-    dump_file(sidepath, content)
+    dump_file(sidepath, content, as_yaml=as_yaml)
     ff.log('saved sidecar {}'.format(sidepath))
     return True
 
@@ -83,7 +83,7 @@ def handle_sidecars(ff):
             continue
 
         modified.append(
-            _sidecar_dump(ff, sidepath, content, fields)
+            _sidecar_dump(ff, sidepath, content, fields, as_yaml)
         )
 
     return any(modified)

@@ -1,42 +1,18 @@
 from pprint import pprint
 
+from .api import FFApi
 from .lib.files import dump_file, load_file
-from .lib.service import api_timestamp, args
+from .lib.args import args
 from .nodelist import handle_nodelist
 from .sidecars import handle_sidecars
 
 
 class FFFlash:
-    class FFApi:
-        def __init__(self, content):
-            self.c = content
-
-        def pull(self, *fields):
-            c = self.c
-            for f in fields:
-                if f in c.keys():
-                    if f == fields[-1]:
-                        return c[f]
-                    c = c[f]
-
-        def push(self, value, *fields):
-            c = self.c
-            for f in fields:
-                if f in c.keys():
-                    if f == fields[-1]:
-                        c[f] = value
-                    c = c[f]
-
-        def timestamp(self):
-            if self.pull('state', 'lastchange') is not None:
-                self.push(api_timestamp(), 'state', 'lastchange')
-
     def __init__(self, argv=None):
         self.args = args(argv)
-        print(self.args)
 
         c = load_file(self.args.APIfile, fallback={}, as_yaml=False)
-        self.api = self.FFApi(c)
+        self.api = FFApi(c)
 
     def save(self):
         self.api.timestamp()

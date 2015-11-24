@@ -1,6 +1,6 @@
-from .lib.remote import www_fetch
-from .lib.struct import load
 from .lib.api import api_descr
+from .lib.remote import www_fetch
+from .lib.struct import struct_load
 
 
 def _nodelist_fetch(ff):
@@ -13,7 +13,7 @@ def _nodelist_fetch(ff):
                 level=False
             )
 
-        with load(data, fallback=None, as_yaml=False) as nodelist:
+        with struct_load(data, fallback=None, as_yaml=False) as nodelist:
             if not nodelist:
                 return ff.log(
                     'could not unload nodelist {}'.format(ff.args.nodelist)

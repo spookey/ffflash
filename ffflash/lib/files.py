@@ -1,7 +1,7 @@
 from codecs import open as c_open
 from os import path
 
-from .struct import dump, load
+from .struct import struct_dump, struct_load
 
 
 def check_file_location(location, must_exist=False):
@@ -35,12 +35,12 @@ def write_file(location, data):
 
 
 def load_file(location, fallback={}, as_yaml=False):
-    with load(
+    with struct_load(
         read_file(location), fallback=fallback, as_yaml=as_yaml
     ) as data:
         return data
 
 
 def dump_file(location, content, as_yaml=False):
-    with dump(content, as_yaml=as_yaml) as data:
+    with struct_dump(content, as_yaml=as_yaml) as data:
         return write_file(location, data) if data else None

@@ -1,5 +1,7 @@
 from datetime import datetime
 from pprint import pformat
+from re import search as re_search
+from re import sub as re_sub
 
 
 class FFApi:
@@ -34,3 +36,10 @@ def api_timestamp(dt=None):
     if not dt:
         dt = datetime.now()
     return dt.isoformat('T')
+
+
+def api_descr(rx, rplc, txt):
+    match = re_search(rx, txt)
+    if match:
+        txt = re_sub(rx, rplc, txt)
+    return txt

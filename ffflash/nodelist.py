@@ -1,5 +1,6 @@
 from .lib.remote import www_fetch
 from .lib.struct import load
+from .lib.api import api_descr
 
 
 def _nodelist_fetch(ff):
@@ -50,11 +51,14 @@ def _nodelist_dump(ff, nodes, clients):
         ff.api.push(nodes, 'state', 'nodes')
         modified.append(True)
 
-    if ff.api.pull('state', 'description') is not None:
-        ff.api.push(
-            '{} Nodes, {} Clients'.format(nodes, clients),
-            'state', 'description'
-        )
+    descr = ff.api.pull('state', 'description')
+    if descr is not None:
+        new = '[{} Nodes, {} Clients]'.format(nodes, clients)
+        new_descr = api_descr(
+            r'(\[[\d]+ Nodes, [\d]+ Clients\])', new, descr
+        ) if descr else new
+        ff.api.push(new_descr, 'state', 'description')
+
         modified.append(True)
 
     return any(modified)

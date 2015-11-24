@@ -37,8 +37,7 @@ def main(argv=None):
     ff.load_api()
 
     if ff.api is None:
-        ff.log('API file does not exist or is empty', level=False)
-        return True
+        return not ff.log('API file does not exist or is empty', level=False)
 
     modified = [
         handle_sidecars(ff),
@@ -51,7 +50,7 @@ def main(argv=None):
         ), level='API file preview')
     else:
         if any(modified):
-            ff.log('saving api file {}'.format(
+            ff.log('saving api file'.format(
                 ff.save()
             ))
 

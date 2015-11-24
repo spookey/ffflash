@@ -1,10 +1,7 @@
 from codecs import open as c_open
-from json import dumps as j_dump
-from json import loads as j_load
 from os import path
 
-from yaml import dump as y_dump
-from yaml import load as y_load
+from .struct import dump, load
 
 
 def check_file_location(location, must_exist=False):
@@ -38,23 +35,12 @@ def write_file(location, data):
 
 
 def load_file(location, fallback={}, as_yaml=False):
-    data = read_file(location)
-    if data is not None:
-        try:
-            return (
-                y_load(data) if as_yaml else j_load(data)
-            )
-        except ValueError:
-            pass
-    return fallback
+    with load(
+        read_file(location), fallback=fallback, as_yaml=as_yaml
+    ) as data:
+        return data
 
 
 def dump_file(location, content, as_yaml=False):
-    if content is not None:
-        return write_file(location, (
-            y_dump(
-                content, indent=4, default_flow_style=False
-            ) if as_yaml else j_dump(
-                content, indent=2, sort_keys=True
-            )
-        ))
+    with dump(content, as_yaml=as_yaml) as data:
+        return write_file(location, data) if data else None

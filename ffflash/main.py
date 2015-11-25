@@ -25,7 +25,9 @@ class FFFlash:
     def log(self, message, level=True):
         c = {
             True: 'info', None: 'warn', False: 'error'
-        }.get(level, level)
+        }.get(level, level) if (
+            level is None or isinstance(level, (bool, str))
+        ) else 'output'
 
         if self.args.verbose or level is not True:
             print('{}\t{}'.format(c.upper(), message))

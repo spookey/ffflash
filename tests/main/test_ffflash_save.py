@@ -1,7 +1,8 @@
-from ffflash.main import FFFlash
-from ffflash.lib.args import parsed_args
-from json import dumps, loads
 from copy import deepcopy
+from json import dumps, loads
+
+from ffflash.lib.args import parsed_args
+from ffflash.main import FFFlash
 
 
 def test_ffflash_save(tmpdir):

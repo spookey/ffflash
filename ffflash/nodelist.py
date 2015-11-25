@@ -1,7 +1,7 @@
 from .lib.api import api_descr
+from .lib.files import check_file_location, load_file
 from .lib.remote import www_fetch
 from .lib.struct import struct_load
-from .lib.files import load_file, check_file_location
 
 
 def _nodelist_fetch(ff):

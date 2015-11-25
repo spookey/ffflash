@@ -1,33 +1,42 @@
 from .lib.api import api_descr
 from .lib.remote import www_fetch
 from .lib.struct import struct_load
+from .lib.files import load_file, check_file_location
 
 
 def _nodelist_fetch(ff):
     ff.log('fetching nodelist {}'.format(ff.args.nodelist))
 
-    with www_fetch(ff.args.nodelist, fallback=None) as data:
-        if not data:
-            return ff.log(
-                'could not fetch nodelist {} {}'.format(ff.args.nodelist),
-                level=False
-            )
-
-        with struct_load(data, fallback=None, as_yaml=False) as nodelist:
-            if not nodelist:
+    def _remote(url):
+        with www_fetch(url, fallback=None) as response:
+            if not response:
                 return ff.log(
-                    'could not unload nodelist {}'.format(ff.args.nodelist)
-                )
-
-            if not all([
-                nodelist.get(a) for a in ['version', 'nodes', 'updated_at']
-            ]):
-                return ff.log(
-                    'this is no nodelist. wrong format',
+                    'could not fetch nodelist {}'.format(url),
                     level=False
                 )
+            with struct_load(response, fallback=None, as_yaml=False) as data:
+                if not data:
+                    return ff.log(
+                        'could not unload nodelist {}'.format(url)
+                    )
+                return data
 
-            return nodelist
+    location = check_file_location(ff.args.nodelist, must_exist=True)
+    nodelist = (
+        load_file(location, fallback=None, as_yaml=False)
+        if location else
+        _remote(ff.args.nodelist)
+    )
+
+    if not isinstance(nodelist, dict) or not all([
+        nodelist.get(a) for a in ['version', 'nodes', 'updated_at']
+    ]):
+        return ff.log(
+            '{} is no nodelist. wrong format'.format(ff.args.nodelist),
+            level=False
+        )
+
+    return nodelist
 
 
 def _nodelist_count(ff, nodelist):

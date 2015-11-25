@@ -36,7 +36,8 @@ Everything **ffflash** needs to know is passed each time as shell parameters. (I
 Nodelist
 --------
 
-If a ``--nodelist`` is passed, this url will be fetched to count online Nodes and Clients from there.
+If a ``--nodelist`` is passed, it will be used to count online Nodes and Clients from there.
+It can either be a local file, or if this does not exist, it is interpreted as URL, and fetched from there.
 
 If successful, the numbers will be added to the APIfile::
 

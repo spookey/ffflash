@@ -15,7 +15,7 @@ def parsed_args(argv=None):
     )
     p.add_argument(
         '-n', '--nodelist', action='store',
-        help='URL to map\'s nodelist.json, updates nodes count'
+        help='URL or location to map\'s nodelist.json, updates nodes count'
     )
     p.add_argument(
         '-s', '--sidecars', nargs='+',

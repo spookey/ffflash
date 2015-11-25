@@ -21,5 +21,5 @@ function run()
 }
 
 
-run "/var/www/ffapi-wiesbaden" "ffapi_wi.json" "http://map.wiesbaden.freifunk.net/data/nodelist.json"
-run "/var/www/ffapi-mainz" "ffapi_mz.json" "http://map.freifunk-mainz.de/data/nodelist.json"
+run "/var/www/ffapi-wiesbaden" "ffapi_wi.json" "/var/www/meshviewer-extern-wi/build/data/nodelist.json"
+run "/var/www/ffapi-mainz" "ffapi_mz.json" "/var/www/meshviewer-extern-mz/build/data/nodelist.json"

@@ -1,7 +1,7 @@
 import pytest
 
 from ffflash.lib.files import dump_file, load_file, read_file, write_file
-from ffflash.lib.struct import struct_load, struct_dump
+from ffflash.lib.struct import struct_dump, struct_load
 
 
 def df(loc, cont):

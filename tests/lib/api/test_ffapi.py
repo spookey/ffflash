@@ -1,6 +1,7 @@
-from ffflash.lib.api import FFApi
-from pprint import pformat
 from copy import deepcopy
+from pprint import pformat
+
+from ffflash.lib.api import FFApi
 
 A = {
     'a': {'b': 'c', 'd': ['e', 'f']},

@@ -1,6 +1,8 @@
-from ffflash.lib.api import api_timestamp
 from datetime import datetime
+
 from dateutil import parser
+
+from ffflash.lib.api import api_timestamp
 
 
 def test_api_timestamp_dt_passed():

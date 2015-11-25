@@ -31,10 +31,11 @@ def write_file(location, data):
     location = check_file_location(location)
     if location and (data is not None):
         with c_open(location, 'w', encoding='utf-8') as wl:
-            return wl.write(data)
+            wl.write(data)
+            return data
 
 
-def load_file(location, fallback={}, as_yaml=False):
+def load_file(location, fallback=None, as_yaml=False):
     with struct_load(
         read_file(location), fallback=fallback, as_yaml=as_yaml
     ) as data:
@@ -43,4 +44,4 @@ def load_file(location, fallback={}, as_yaml=False):
 
 def dump_file(location, content, as_yaml=False):
     with struct_dump(content, as_yaml=as_yaml) as data:
-        return write_file(location, data) if data else None
+        return write_file(location, data) if (data is not None) else None

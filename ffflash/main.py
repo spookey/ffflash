@@ -34,7 +34,7 @@ class FFFlash:
         return level
 
 
-def main(argv=None):
+def run(argv=None):
     ff = FFFlash(parsed_args(argv))
     ff.load_api()
 

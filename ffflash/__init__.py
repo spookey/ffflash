@@ -1,2 +1,2 @@
-from .main import main
-ffflash = main
+from .main import run
+ffflash = run

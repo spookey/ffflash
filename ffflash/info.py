@@ -8,3 +8,6 @@ class Info:
     @property
     def release(self):
         return '{}{}'.format(self.version, '')
+
+
+info = Info()

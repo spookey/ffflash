@@ -11,7 +11,7 @@ from ffflash.lib.files import read_file
 
 long_description = '{}\n{}'.format(
     __doc__,
-    read_file(path.join(path.dirname(path.abspath(__file__)), 'readme.rst'))
+    read_file(path.join(path.dirname(path.abspath(__file__)), 'README.rst'))
 )
 setup_requires = (
     ['pytest-runner'] if {'pytest', 'test', 'ptr'}.intersection(argv) else []

@@ -3,11 +3,11 @@ class Info:
     author_email = 'frieder.griesshammer@der-beweis.de'
     name = 'ffflash'
     url = 'https://github.com/spookey/ffflash'
-    version = '0.8'
+    version = '0.9'
 
     @property
     def release(self):
-        return '{}{}'.format(self.version, '')
+        return '{}{}'.format(self.version, 'a0')
 
 
 info = Info()

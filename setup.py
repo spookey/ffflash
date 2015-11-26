@@ -43,6 +43,7 @@ setup_params = dict(
     tests_require=[
         'pytest', 'python_dateutil', 'PyYAML'
     ],
+    zip_safe=True,
     classifiers=[
         'Environment :: Console',
         'Intended Audience :: System Administrators',

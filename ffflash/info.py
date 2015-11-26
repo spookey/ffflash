@@ -7,7 +7,7 @@ class Info:
 
     @property
     def release(self):
-        return '{}{}'.format(self.version, 'a0')
+        return '{}{}'.format(self.version, 'a1')
 
 
 info = Info()

@@ -17,7 +17,7 @@ def test_www_fetch_fallback():
 
 
 def test_www_decode_patched_results(monkeypatch):
-    def r(u):
+    def r(u, *args, **kwargs):
         class R:
             def read(self):
                 return bytes(u, 'utf-8')
@@ -26,6 +26,9 @@ def test_www_decode_patched_results(monkeypatch):
 
     monkeypatch.setattr(request, 'urlopen', r)
 
-    for td in ['test', '🐸', '\n\t', ' ']:
+    for td in [
+        'test', '🐸', '\n\t', ' ',
+        '{\n\t"a": {\n\t\t"b": "c"\n\t}\n}'
+    ]:
         with www_fetch(td) as t:
             assert t == td

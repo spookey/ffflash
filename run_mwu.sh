@@ -18,6 +18,8 @@ function run()
             "$WWWDIR/inc/support.club.yaml" \
             "$WWWDIR/inc/support.donations.campaigns.yaml" \
             "$WWWDIR/inc/timeline.yaml"
+
+    if [ $? -ne 0 ]; then echo "# error processing $APIFILE"; fi
 }
 
 

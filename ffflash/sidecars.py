@@ -45,7 +45,7 @@ def _sidecar_load(ff, sidepath, fields, as_yaml):
     if apicont is None:
         return ff.log(
             '{} does not exist. skipping'.format('.'.join(fields)),
-            level=False
+            level=None
         )
 
     sidecont = load_file(sidepath, as_yaml=as_yaml)
@@ -62,7 +62,7 @@ def _sidecar_dump(ff, sidepath, content, fields, as_yaml):
     if ff.api.pull(*fields) is None:
         return ff.log(
             '{} does not exist. can\'t push'.format('.'.join(fields)),
-            level=False
+            level=None
         )
 
     ff.api.push(content, *fields)

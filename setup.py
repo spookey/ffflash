@@ -9,12 +9,29 @@ from setuptools import setup
 from ffflash.info import info
 from ffflash.lib.files import read_file
 
-long_description = '{}\n{}'.format(
-    __doc__,
-    read_file(path.join(path.dirname(path.abspath(__file__)), 'README.rst'))
-)
+
+def local_file(name):
+    return read_file(path.join(
+        path.dirname(path.abspath(__file__)), name
+    ), fallback='')
+
+
+long_description = '{}\n{}'.format(__doc__, local_file('README.rst'))
+requirements = [r for r in local_file('requirements.txt').split('\n') if r]
+
+
+def find_req(*names):
+    return [req for name in names for req in [
+        r for r in requirements if r.lower().startswith(name)
+    ]]
+
+
 setup_requires = (
-    ['pytest-runner'] if {'pytest', 'test', 'ptr'}.intersection(argv) else []
+    find_req('pytest') if
+    {'pytest', 'test', 'ptr'}.intersection(argv) else []
+) + (
+    find_req('sphinx') if
+    {'build_sphinx', 'upload_docs'}.intersection(argv) else []
 )
 
 setup_params = dict(
@@ -36,13 +53,9 @@ setup_params = dict(
         'ffflash.py'
     ],
     provides=[info.name],
-    install_requires=[
-        'PyYAML'
-    ],
+    install_requires=find_req('pyyaml'),
     setup_requires=setup_requires,
-    tests_require=[
-        'pytest', 'python_dateutil', 'PyYAML'
-    ],
+    tests_require=find_req('pytest', 'python_dateutil', 'pyyaml'),
     zip_safe=True,
     classifiers=[
         'Environment :: Console',

@@ -1,0 +1,2 @@
+include LICENSE.txt readme.rst run_mwu.sh
+recursive-exclude . *.pyc .DS_Store

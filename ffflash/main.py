@@ -1,3 +1,4 @@
+from .info import info
 from .lib.api import FFApi
 from .lib.args import parsed_args
 from .lib.files import check_file_location, dump_file, load_file
@@ -36,6 +37,8 @@ class FFFlash:
 
 def run(argv=None):
     ff = FFFlash(parsed_args(argv))
+
+    ff.log('{} {}'.format(info.name, info.release))
     ff.load_api()
 
     if ff.api is None:

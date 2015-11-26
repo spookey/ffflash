@@ -1,5 +1,5 @@
 '''
-FreiFunk File nodeList And Sidecar Helper
+This software is available as package on pypi.
 '''
 from os import path
 from sys import argv
@@ -11,26 +11,35 @@ from ffflash.lib.files import read_file
 
 
 def local_file(name):
+    '''
+        :param name: filename to read relative from current directory
+        :returns str: content of ``name`` or empty string on failure
+    '''
     return read_file(path.join(
         path.dirname(path.abspath(__file__)), name
     ), fallback='')
 
 
-long_description = '{}\n{}'.format(__doc__, local_file('README.rst'))
+long_description = '{}\n{}'.format(info.description, local_file('README.rst'))
 requirements = [r for r in local_file('requirements.txt').split('\n') if r]
 
 
-def find_req(*names):
+def find_requirements(*names):
+    '''
+        :param names: one or more required package names
+        :returns list: package lines from ``requirements.txt`` whose lowercased
+            name is in ``names``
+    '''
     return [req for name in names for req in [
         r for r in requirements if r.lower().startswith(name)
     ]]
 
 
 setup_requires = (
-    find_req('pytest') if
+    find_requirements('pytest') if
     {'pytest', 'test', 'ptr'}.intersection(argv) else []
 ) + (
-    find_req('sphinx') if
+    find_requirements('sphinx') if
     {'build_sphinx', 'upload_docs'}.intersection(argv) else []
 )
 
@@ -38,24 +47,20 @@ setup_params = dict(
     name=info.name,
     version=info.release,
     url=info.url,
-    download_url='{}/archive/{}.tar.gz'.format(info.url, info.release),
+    download_url=info.download_url,
     license='BSD',
     author=info.author,
     author_email=info.author_email,
-    description=__doc__,
+    description=info.description,
     long_description=long_description,
-    packages=[
-        'ffflash', 'ffflash.lib'
-    ],
+    packages=['ffflash', 'ffflash.lib'],
     include_package_data=True,
     platforms='posix',
-    scripts=[
-        'ffflash.py'
-    ],
+    scripts=['ffflash.py'],
     provides=[info.name],
-    install_requires=find_req('pyyaml'),
+    install_requires=find_requirements('pyyaml'),
     setup_requires=setup_requires,
-    tests_require=find_req('pytest', 'python_dateutil', 'pyyaml'),
+    tests_require=find_requirements('pytest', 'python_dateutil', 'pyyaml'),
     zip_safe=True,
     classifiers=[
         'Environment :: Console',

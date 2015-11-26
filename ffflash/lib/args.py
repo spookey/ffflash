@@ -1,12 +1,14 @@
 from argparse import ArgumentParser
 from sys import argv as _argv
 
+from ffflash.info import info
+
 
 def parsed_args(argv=None):
     p = ArgumentParser(
-        prog='ffflash',
-        description='',
-        epilog='',
+        prog=info.name,
+        description=info.description,
+        epilog='{} {}'.format(info.name, info.release),
         add_help=True
     )
     p.add_argument(

@@ -7,12 +7,20 @@ Documentation
 =============
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    main
    nodelist
    sidecars
    lib
+
+
+Setup
+-----
+
+.. automodule:: setup
+    :members:
+    :undoc-members:
 
 Info
 ----
@@ -20,6 +28,7 @@ Info
 .. automodule:: ffflash.info
     :members:
     :undoc-members:
+    :private-members:
 
 
 Indices and tables

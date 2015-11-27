@@ -44,8 +44,7 @@ def _nodelist_count(ff, nodelist):
     for node in nodelist.get('nodes', []):
         if node.get('status', {}).get('online', False):
             nodes += 1
-        if node.get('status', {}).get('clients', False):
-            clients += 1
+            clients += node.get('status', {}).get('clients', 0)
     ff.log('found {} nodes, {} clients'.format(nodes, clients))
 
     if not all([nodes, clients]):

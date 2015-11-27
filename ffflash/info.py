@@ -14,16 +14,20 @@ class Info:
     name = 'ffflash'
     url = 'https://github.com/spookey/ffflash'
     version = '0.9'
-    _release = 'a2'
+    _release = 'a3'
 
     @property
     def release(self):
-        ''':return: ``version`` + ``_release``'''
+        '''
+        :return str: ``version`` + ``_release``
+        '''
         return '{}{}'.format(self.version, self._release)
 
     @property
     def download_url(self):
-        ''':return: url constructed from ``url`` and ``release`` for tgz'''
+        '''
+        :return str: link to *.tar.gz* constructed from ``url`` and ``release``
+        '''
         return '{}/archive/{}.tar.gz'.format(self.url, self.release)
 
 info = Info()

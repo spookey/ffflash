@@ -5,6 +5,12 @@ from ffflash.info import info
 
 
 def parsed_args(argv=None):
+    '''
+    Parse arguments from commandline
+
+    :param argv: List of Arguments to parse. - If omitted **sys.argv** is used
+    :return Namespace: arguments from **ArgumentParser** for ``argv``
+    '''
     p = ArgumentParser(
         prog=info.name,
         description=info.description,

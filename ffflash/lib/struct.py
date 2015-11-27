@@ -10,6 +10,13 @@ from yaml.scanner import ScannerError
 
 
 def merge_dicts(first, second):
+    '''
+    Merge nested dictionaries deeply
+
+    :param first: Source dictionary
+    :param second: Dictionary to merge into ``first``
+    :return dict: merged dictionaries
+    '''
     if not isinstance(second, dict):
         return second
     res = deepcopy(first)
@@ -25,6 +32,14 @@ def merge_dicts(first, second):
 
 @contextmanager
 def struct_load(content, fallback=None, as_yaml=False,):
+    '''
+    Contextmanager to unpickle either *json* or *yaml* from a string
+
+    :param content: string to unpickle
+    :param fallback: data to return in case of unpickle failure
+    :param as_yaml: read as *yaml* instead of *json*
+    :yield: unpickled ``content``
+    '''
     try:
         yield (
             y_load(content) if as_yaml else j_load(content)
@@ -35,6 +50,13 @@ def struct_load(content, fallback=None, as_yaml=False,):
 
 @contextmanager
 def struct_dump(content, as_yaml=False):
+    '''
+    Contextmanager to pickle either *json* or *yaml* into a string
+
+    :param content: data to pickle
+    :param as_yaml: output as *yaml* instead of *json*
+    :yield str: pickled ``content``
+    '''
     try:
         yield y_dump(
             content, indent=4, default_flow_style=False

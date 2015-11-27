@@ -28,7 +28,7 @@ class FFApi:
         if self.pull('state', 'lastchange') is not None:
             self.push(api_timestamp(), 'state', 'lastchange')
 
-    def show(self):
+    def pretty(self):
         return pformat(self.c)
 
 

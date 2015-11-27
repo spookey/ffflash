@@ -51,11 +51,11 @@ def test_ffapi_push():
     assert f.c == A
 
 
-def test_ffapi_show():
+def test_ffapi_pretty():
     for tc in [
         {}, {'a': 'b'}, {'a': {'b': 'c'}}, {'a': ['b', 'c']}
     ]:
-        assert FFApi(tc).show() == pformat(tc)
+        assert FFApi(tc).pretty() == pformat(tc)
 
 
 def test_ffapi_timestamp_no_field():

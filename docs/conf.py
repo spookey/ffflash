@@ -57,6 +57,7 @@ master_doc = 'index'
 project = info.name
 copyright = '2015, {}'.format(info.author)
 author = info.author
+rst_epilog = info.rst_epilog
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -122,8 +123,8 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-  'sidebar_includehidden': False,
-  'show_related': True
+    'sidebar_includehidden': False,
+    'show_related': True
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -233,8 +234,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'FFFlash.tex', 'FFFlash Documentation',
-   info.author, 'manual'),
+    (master_doc, 'FFFlash.tex', 'FFFlash Documentation',
+     info.author, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -277,9 +278,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, info.name, 'FFFlash Documentation',
-   author, 'FFFlash', 'One line description of project.',
-   'Miscellaneous'),
+    (master_doc, info.name, 'FFFlash Documentation',
+     author, 'FFFlash', 'One line description of project.',
+     'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.

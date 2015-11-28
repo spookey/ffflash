@@ -38,7 +38,7 @@ class FFFlash:
 def run(argv=None):
     ff = FFFlash(parsed_args(argv))
 
-    ff.log('{} {}'.format(info.name, info.release))
+    ff.log(info.ident)
     ff.load_api()
 
     if ff.api is None:

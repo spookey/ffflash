@@ -11,30 +11,30 @@ def parsed_args(argv=None):
     :param argv: List of Arguments to parse. - If omitted **sys.argv** is used
     :return Namespace: arguments from **ArgumentParser** for ``argv``
     '''
-    p = ArgumentParser(
+    parser = ArgumentParser(
         prog=info.name,
         description=info.description,
-        epilog='{} {}'.format(info.name, info.release),
+        epilog=info.ident,
         add_help=True
     )
-    p.add_argument(
+    parser.add_argument(
         'APIfile', action='store',
         help='Freifunk API File to modify'
     )
-    p.add_argument(
+    parser.add_argument(
         '-n', '--nodelist', action='store',
         help='URL or location to map\'s nodelist.json, updates nodes count'
     )
-    p.add_argument(
+    parser.add_argument(
         '-s', '--sidecars', nargs='+',
         help='sync updates from/with sidecar files'
     )
-    p.add_argument(
+    parser.add_argument(
         '-d', '--dry', action='store_true',
         help='do not save output, displays only a preview'
     )
-    p.add_argument(
+    parser.add_argument(
         '-v', '--verbose', action='store_true',
         help='show verbose output'
     )
-    return p.parse_args(argv if argv else _argv[1:])
+    return parser.parse_args(argv if argv else _argv[1:])

@@ -1,20 +1,20 @@
-from .lib.api import api_descr
-from .lib.files import check_file_location, load_file
-from .lib.remote import www_fetch
-from .lib.struct import struct_load
+from ffflash.lib.api import api_descr
+from ffflash.lib.files import check_file_location, load_file
+from ffflash.lib.remote import fetch_www
+from ffflash.lib.struct import load_struct
 
 
 def _nodelist_fetch(ff):
     ff.log('fetching nodelist {}'.format(ff.args.nodelist))
 
     def _remote(url):
-        with www_fetch(url, fallback=None) as response:
+        with fetch_www(url, fallback=None) as response:
             if not response:
                 return ff.log(
                     'could not fetch nodelist {}'.format(url),
                     level=False
                 )
-            with struct_load(response, fallback=None, as_yaml=False) as data:
+            with load_struct(response, fallback=None, as_yaml=False) as data:
                 if not data:
                     return ff.log(
                         'could not unload nodelist {}'.format(url)

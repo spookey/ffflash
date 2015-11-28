@@ -1,7 +1,7 @@
 from codecs import open as c_open
 from os import path
 
-from .struct import struct_dump, struct_load
+from ffflash.lib.struct import dump_struct, load_struct
 
 
 def check_file_location(location, must_exist=False):
@@ -70,7 +70,7 @@ def load_file(location, fallback=None, as_yaml=False):
     :param as_yaml: read as *yaml* instead of *json*
     :return: unpickled data from ``location``
     '''
-    with struct_load(
+    with load_struct(
         read_file(location), fallback=fallback, as_yaml=as_yaml
     ) as data:
         return data
@@ -84,5 +84,5 @@ def dump_file(location, content, as_yaml=False):
     :param content: data to store
     :param as_yaml: output as *yaml* instead of *json*
     '''
-    with struct_dump(content, as_yaml=as_yaml) as data:
+    with dump_struct(content, as_yaml=as_yaml) as data:
         return write_file(location, data) if (data is not None) else None

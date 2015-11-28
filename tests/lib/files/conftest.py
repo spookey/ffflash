@@ -1,7 +1,7 @@
 import pytest
 
 from ffflash.lib.files import dump_file, load_file, read_file, write_file
-from ffflash.lib.struct import struct_dump, struct_load
+from ffflash.lib.struct import dump_struct, load_struct
 
 
 def df(loc, cont):
@@ -33,12 +33,12 @@ def sdf(cont):
 
 
 def sdj(cont):
-    with struct_dump(cont, as_yaml=False) as res:
+    with dump_struct(cont, as_yaml=False) as res:
         return res
 
 
 def sdy(cont):
-    with struct_dump(cont, as_yaml=True) as res:
+    with dump_struct(cont, as_yaml=True) as res:
         return res
 
 
@@ -47,12 +47,12 @@ def slf(cont):
 
 
 def slj(cont):
-    with struct_load(cont, as_yaml=False) as res:
+    with load_struct(cont, as_yaml=False) as res:
         return res
 
 
 def sly(cont):
-    with struct_load(cont, as_yaml=True) as res:
+    with load_struct(cont, as_yaml=True) as res:
         return res
 
 

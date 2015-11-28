@@ -4,7 +4,7 @@ from urllib import error, request
 
 
 @contextmanager
-def www_fetch(url, fallback=None, timeout=5):
+def fetch_www(url, fallback=None, timeout=5):
     '''
     Contextmanager to retrieve content from the web
 

@@ -31,7 +31,7 @@ def merge_dicts(first, second):
 
 
 @contextmanager
-def struct_load(content, fallback=None, as_yaml=False,):
+def load_struct(content, fallback=None, as_yaml=False,):
     '''
     Contextmanager to unpickle either *json* or *yaml* from a string
 
@@ -49,7 +49,7 @@ def struct_load(content, fallback=None, as_yaml=False,):
 
 
 @contextmanager
-def struct_dump(content, as_yaml=False):
+def dump_struct(content, as_yaml=False):
     '''
     Contextmanager to pickle either *json* or *yaml* into a string
 

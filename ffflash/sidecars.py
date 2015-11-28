@@ -1,7 +1,7 @@
 from os import path
 
-from .lib.files import check_file_location, dump_file, load_file
-from .lib.struct import merge_dicts
+from ffflash.lib.files import check_file_location, dump_file, load_file
+from ffflash.lib.struct import merge_dicts
 
 
 def _sidecar_path(ff, sc):

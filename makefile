@@ -23,6 +23,7 @@ WATCH = watchmedo shell-command --recursive --patterns="*.py;*.rst"
 
 all: .docs .cov
 clean: .rmdocs .rmcov
+	find . -name '__pycache__' -delete -print -o -name '*.pyc' -delete -print
 call: clean all
 
 loop: all

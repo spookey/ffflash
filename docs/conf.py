@@ -54,7 +54,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = info.name
+project = info.cname
 copyright = '2015, {}'.format(info.author)
 author = info.author
 rst_epilog = info.rst_epilog
@@ -212,7 +212,7 @@ html_show_sourcelink = True
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'FFFlashdoc'
+htmlhelp_basename = '{}doc'.format(info.cname)
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -234,7 +234,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'FFFlash.tex', 'FFFlash Documentation',
+    (master_doc,
+     '{}.tex'.format(info.cname), '{} Documentation'.format(info.cname),
      info.author, 'manual'),
 ]
 
@@ -264,8 +265,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, info.name, 'FFFlash Documentation',
-     [author], 1)
+    (master_doc, info.name, '{} Documentation'.format(info.cname),
+     [info.author], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -278,8 +279,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, info.name, 'FFFlash Documentation',
-     author, 'FFFlash', 'One line description of project.',
+    (master_doc, info.cname, '{} Documentation'.format(info.cname),
+     info.author, info.cname, info.description,
      'Miscellaneous'),
 ]
 

@@ -1,5 +1,24 @@
 '''
-This software is available as package on pypi.
+|info_cname| is available as package, you can find the newest version here:
+
+:pypy: |info_pkg_url|
+
+Most of the listed requirements are not necessary, only if you are developing.
+The only exception is **PyYAML**.
+
+:meth:`find_requirements` figures out what dependencies are really required.
+
+.. literalinclude:: ../requirements.txt
+    :linenos:
+
+To install/update latest version of |info_name|::
+
+    sudo pip3 install -U PyYAML ffflash
+
+To install all requirements from a local clone for developing::
+
+    sudo pip3 install -U -r requirements.txt
+
 '''
 from os import path
 from sys import argv

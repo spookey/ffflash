@@ -6,14 +6,13 @@ TESTDIR = tests
 HTMLCOVDIR = htmlcov
 
 PYTEST = py.test
-WATCH = watchmedo shell-command --recursive --patterns="*.py;*.rst"
-
+WATCH = watchmedo shell-command --recursive --patterns="*.py;*.rst" --command="$(MAKE) MKCMD"
+BROWSE = python3 -c "import webbrowser; webbrowser.open_new_tab('URL')"
 
 .rmdocs:
 	$(MAKE) -C $(DOCDIR) clean
 .docs:
 	$(MAKE) -C $(DOCDIR) html
-
 
 .rmcov:
 	rm -rvf $(HTMLCOVDIR) .coverage
@@ -27,26 +26,30 @@ clean: .rmdocs .rmcov
 call: clean all
 
 loop: all
-	$(WATCH) --command="$(MAKE) all"
+	$(subst MKCMD,all,$(WATCH))
 cloop: call
-	$(WATCH) --command="$(MAKE) call"
+	$(subst MKCMD,call,$(WATCH))
 
 
 docs: .docs
 cdocs: .rmdocs .docs
+hdocs: docs
+	$(subst URL,$(DOCDIR)/_build/html/index.html,$(BROWSE))
 ldocs: docs
-	$(WATCH) --command="$(MAKE) docs"
+	$(subst MKCMD,docs,$(WATCH))
 cldocs: cdocs
-	$(WATCH) --command="$(MAKE) cdocs"
+	$(subst MKCMD,cdocs,$(WATCH))
 
 cov: .cov
 ccov: .rmcov .cov
+hcov: cov
+	$(subst URL,$(HTMLCOVDIR)/index.html,$(BROWSE))
 lcov: cov
-	$(WATCH) --command="$(MAKE) cov"
+	$(subst MKCMD,cov,$(WATCH))
 clcov: ccov
-	$(WATCH) --command="$(MAKE) ccov"
+	$(subst MKCMD,ccov,$(WATCH))
 
 test:
 	$(PYTEST) -vss $(TESTDIR) .
 ltest: test
-	$(WATCH) --command="$(MAKE) test"
+	$(subst MKCMD,test,$(WATCH))

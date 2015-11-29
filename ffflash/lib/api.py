@@ -52,7 +52,7 @@ class FFApi:
     def pretty(self):
         '''
         :return str: current content in a human readable way
-        using **pprint.pformat**
+            using **pprint.pformat**
         '''
         return pformat(self.c)
 

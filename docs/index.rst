@@ -1,19 +1,19 @@
-.. include:: ../README.rst
+Welcome to the |info_cname| Documentation
+
+Some random Links:
+
+:GitHub: |info_url|
+:PyPy: |info_pkg_url|
+:rtfd: |info_doc_url|
 
 |
+
+.. include:: ../README.rst
+
 |
 
 Documentation
 =============
-
-.. toctree::
-   :maxdepth: 3
-
-   main
-   nodelist
-   sidecars
-   lib
-
 
 Setup
 -----
@@ -22,13 +22,13 @@ Setup
     :members:
     :undoc-members:
 
-Info
-----
+.. toctree::
+   :maxdepth: 3
 
-.. automodule:: ffflash.info
-    :members:
-    :undoc-members:
-    :private-members:
+   main
+   nodelist
+   sidecars
+   lib
 
 
 Indices and tables

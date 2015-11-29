@@ -1,4 +1,4 @@
-ffflash
+FFFlash
 =======
 
 This Program helps to manage `Freifunk APIfiles <https://api.freifunk.net/>`_.

@@ -14,6 +14,8 @@ class Info:
         self.description = 'FreiFunk File nodeList And Sidecar Helper'
         self.cname = 'FFFlash'
         self.url = 'https://github.com/spookey/ffflash'
+        self.doc_url = 'https://ffflash.readthedocs.org'
+        self.pkg_url = 'https://pypi.python.org/pypi/ffflash'
         self.version = '0.9'
 
         self.name = self.cname.lower()

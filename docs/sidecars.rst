@@ -1,7 +1,7 @@
 Sidecars
 ========
 
-.. automodule:: ffflash.sidecars
+.. automodule:: ffflash.inc.sidecars
     :members:
     :undoc-members:
     :private-members:

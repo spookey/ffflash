@@ -36,7 +36,7 @@ def _sidecar_path(ff, sc):
 
 
 def _sidecar_load(ff, sidepath, fields, as_yaml):
-    if ff.api is None:
+    if not ff.access_for('sidecars'):
         return False
 
     ff.log('searching for {}'.format('.'.join(fields)))
@@ -56,7 +56,7 @@ def _sidecar_load(ff, sidepath, fields, as_yaml):
 
 
 def _sidecar_dump(ff, sidepath, content, fields, as_yaml):
-    if ff.api is None:
+    if not ff.access_for('sidecars'):
         return False
 
     if ff.api.pull(*fields) is None:
@@ -72,7 +72,7 @@ def _sidecar_dump(ff, sidepath, content, fields, as_yaml):
 
 
 def handle_sidecars(ff):
-    if not ff.args.sidecars:
+    if not ff.access_for('sidecars'):
         return False
 
     modified = []

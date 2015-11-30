@@ -5,14 +5,14 @@ from ffflash.lib.args import parsed_args
 F = 'ffapi_test_file.json'
 
 
-def ex(a):
+def sys_ex(a):
     with pytest.raises(SystemExit):
         parsed_args(a)
 
 
 def test_parsed_args_empty_or_wrong_or_help():
     for ta in [[], ['--wrong'], ['--what', '--ever'], ['--help']]:
-        ex(ta)
+        sys_ex(ta)
 
 
 def test_parsed_args_apifile_missing():
@@ -21,7 +21,7 @@ def test_parsed_args_apifile_missing():
         ['-s', 'a', 'b'],
         ['-d'], ['-v'], ['-h']
     ]:
-        ex(ta)
+        sys_ex(ta)
 
 
 def test_parsed_args_nodelist_or_sidecars_missing():
@@ -29,49 +29,56 @@ def test_parsed_args_nodelist_or_sidecars_missing():
         [F, '-n'], [F, '--nodelist'],
         [F, '-s'], [F, '--sidecars']
     ]:
-        ex(ta)
+        sys_ex(ta)
+
+
+def test_parsed_args_rankefile_with_or_without_nodelist():
+    N = 'nodelist_test_file.json'
+    R = 'rankfile_test_file.json'
+
+    for ta in [
+        [F, '-n'], [F, '--nodelist'], [F, '-r'], [F, '--rankfile'],
+        [F, '-n', N, '-r'], [F, '--nodelist', N, '--rankfile'],
+        [F, '-r'], [F, '--rankfile', R]
+    ]:
+        sys_ex(ta)
+    for ta in [
+        [F, '-n', N], [F, '--nodelist', N],
+        [F, '-n', N, '-r', R], [F, '--nodelist', N, '--rankfile', R]
+    ]:
+        assert parsed_args(ta)
 
 
 def test_parsed_args_valid_options():
-    def t(a, nl=None, sc=None, d=False, v=False):
+    def t(a, nl=None, sc=None, rf=None, d=False, v=False):
         assert a.APIfile == F
         assert a.nodelist == nl
+        assert a.rankfile == rf
         assert a.sidecars == ([sc] if sc else None)
         assert a.dry == d
         assert a.verbose == v
 
     nl = 'http://localhost/nodelist.json'
     sc = 'contact services timeline'
+    rf = 'rankfile.json'
 
-    t(
-        parsed_args([F, '-n', nl, '-s', sc, '-d', '-v']),
-        nl=nl, sc=sc, d=True, v=True
-    )
-    t(
-        parsed_args([F, '-n', nl, '-s', sc, '-d']),
-        nl=nl, sc=sc, d=True
-    )
-    t(
-        parsed_args([F, '-n', nl, '-s', sc, '-v']),
-        nl=nl, sc=sc, v=True
-    )
-    t(
-        parsed_args([F, '-n', nl, '-s', sc]),
-        nl=nl, sc=sc
-    )
-    t(
-        parsed_args([F, '-n', nl]),
-        nl=nl
-    )
-    t(
-        parsed_args([F, '-s', sc]),
-        sc=sc
-    )
-    t(
-        parsed_args([F, '-n', nl, '-d']),
-        nl=nl, d=True
-    )
-    t(
-        parsed_args([F, '-s', sc, '-v']),
-        sc=sc, v=True
-    )
+    t(parsed_args([F, '-n', nl, '-s', sc, '-d', '-v']),
+      nl=nl, sc=sc, d=True, v=True)
+    t(parsed_args([F, '-n', nl, '-s', sc, '-d']),
+      nl=nl, sc=sc, d=True)
+    t(parsed_args([F, '-n', nl, '-s', sc, '-v']),
+      nl=nl, sc=sc, v=True)
+    t(parsed_args([F, '-n', nl, '-s', sc]),
+      nl=nl, sc=sc)
+    t(parsed_args([F, '-n', nl]),
+      nl=nl)
+    t(parsed_args([F, '-s', sc]),
+      sc=sc)
+    t(parsed_args([F, '-n', nl, '-r', rf]),
+      nl=nl, rf=rf)
+    t(parsed_args([F, '-n', nl, '-s', sc, '-r', rf]),
+      nl=nl, sc=sc, rf=rf)
+    t(parsed_args([F, '-n', nl, '-d']),
+      nl=nl, d=True)
+    t(parsed_args([F, '-s', sc, '-v']),
+      sc=sc, v=True)

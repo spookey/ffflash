@@ -14,9 +14,6 @@ def test_ffflash_load_api_no_json(tmpdir):
     assert f
     assert f.args.APIfile == str(p)
     assert f.location == str(p)
-    assert f.api is None
-
-    assert f.load_api() is None
 
     assert f.api is None
 
@@ -32,9 +29,6 @@ def test_ffflash_load_api(tmpdir):
     f = FFFlash(parsed_args([str(p), '-d']))
 
     assert f
-    assert f.api is None
-
-    assert f.load_api() is None
 
     assert f.api is not None
     assert f.api.pull('a') == 'b'
@@ -51,9 +45,6 @@ def test_ffflash_reload_api(tmpdir):
     f = FFFlash(parsed_args([str(p), '-d']))
 
     assert f
-    assert f.api is None
-
-    assert f.load_api() is None
 
     assert f.api is not None
     assert f.api.pull('a') == 'b'

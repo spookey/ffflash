@@ -1,9 +1,9 @@
-from .info import info
-from .lib.api import FFApi
-from .lib.args import parsed_args
-from .lib.files import check_file_location, dump_file, load_file
-from .nodelist import handle_nodelist
-from .sidecars import handle_sidecars
+from ffflash.info import info
+from ffflash.lib.api import FFApi
+from ffflash.lib.args import parsed_args
+from ffflash.lib.files import check_file_location, dump_file, load_file
+from ffflash.inc.nodelist import handle_nodelist
+from ffflash.inc.sidecars import handle_sidecars
 
 
 class FFFlash:
@@ -12,16 +12,28 @@ class FFFlash:
         self.location = check_file_location(self.args.APIfile, must_exist=True)
         self.api = None
 
+        self.load_api()
+
     def load_api(self):
-        if self.api is None and self.location:
+        if (self.api is None) and self.location:
             c = load_file(self.location, as_yaml=False)
             if c:
                 self.api = FFApi(c)
 
     def save(self):
-        if self.api is not None and self.location:
+        if (self.api is not None) and self.location:
             self.api.timestamp()
             return dump_file(self.location, self.api.c, as_yaml=False)
+
+    def access_for(self, name):
+        return all([
+            (self.api is not None),
+            {
+                'sidecars': self.args.sidecars,
+                'nodelist': self.args.nodelist,
+                'rankfile': (self.args.nodelist and self.args.rankfile),
+            }.get(name, False)
+        ])
 
     def log(self, message, level=True):
         c = {
@@ -39,7 +51,6 @@ def run(argv=None):
     ff = FFFlash(parsed_args(argv))
 
     ff.log(info.ident)
-    ff.load_api()
 
     if ff.api is None:
         return not ff.log('Error loading API file', level=False)

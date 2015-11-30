@@ -43,7 +43,7 @@ def _nodelist_count(ff, nodelist):
 
 
 def _nodelist_dump(ff, nodes, clients):
-    if ff.api is None:
+    if not ff.access_for('nodelist'):
         return False
 
     modified = []
@@ -65,7 +65,7 @@ def _nodelist_dump(ff, nodes, clients):
 
 
 def handle_nodelist(ff):
-    if not ff.args.nodelist:
+    if not ff.access_for('nodelist'):
         return False
 
     nodelist = _nodelist_fetch(ff)

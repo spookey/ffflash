@@ -6,7 +6,7 @@ TESTDIR = tests
 HTMLCOVDIR = htmlcov
 
 PYTEST = py.test
-WATCH = watchmedo shell-command --recursive --patterns="*.py;*.rst" --command="$(MAKE) MKCMD"
+WATCH = watchmedo shell-command --recursive --wait --patterns="*.py;*.rst" --command="$(MAKE) MKCMD"
 BROWSE = python3 -c "import webbrowser; webbrowser.open_new_tab('URL')"
 
 .rmdocs:

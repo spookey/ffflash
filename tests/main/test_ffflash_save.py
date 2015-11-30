@@ -16,8 +16,6 @@ def test_ffflash_save(tmpdir):
     f = FFFlash(a)
 
     assert f
-    assert f.api is None
-    assert f.load_api() is None
 
     assert f.args.APIfile == str(p)
     assert f.location == str(p)

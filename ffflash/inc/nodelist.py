@@ -1,3 +1,4 @@
+from ffflash.inc.rankfile import handle_rankfile
 from ffflash.lib.api import api_descr
 from ffflash.lib.files import check_file_location, load_file
 from ffflash.lib.remote import fetch_www_struct
@@ -72,8 +73,17 @@ def handle_nodelist(ff):
     if not nodelist:
         return False
 
-    nodes, clients = _nodelist_count(ff, nodelist)
-    if not all([nodes, clients]):
-        return False
+    modified = []
 
-    return _nodelist_dump(ff, nodes, clients)
+    nodes, clients = _nodelist_count(ff, nodelist)
+    if all([nodes, clients]):
+        modified.append(
+            _nodelist_dump(ff, nodes, clients)
+        )
+
+    if ff.access_for('rankfile'):
+        modified.append(
+            handle_rankfile(ff, nodelist)
+        )
+
+    return any(modified)

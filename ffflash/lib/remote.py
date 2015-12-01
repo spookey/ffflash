@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from socket import gaierror
 from urllib import error, request
+
 from ffflash.lib.files import load_struct
 
 

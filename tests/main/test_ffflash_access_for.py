@@ -9,6 +9,7 @@ def test_ffflash_access_for_with_empty_paths(tmpdir, fffake):
         sidecars=[tmpdir.join('side.yaml'), tmpdir.join('cars.yaml')]
     )
 
+    assert f.access_for('api') is False
     assert f.access_for('nodelist') is False
     assert f.access_for('sidecars') is False
     assert f.access_for('rankfile') is False
@@ -30,6 +31,7 @@ def test_ffflash_access_for_with_correct_paths(tmpdir, fffake):
         sidecars=[tmpdir.join('side.yaml'), tmpdir.join('cars.yaml')]
     )
 
+    assert f.access_for('api') is True
     assert f.access_for('nodelist') is True
     assert f.access_for('sidecars') is True
     assert f.access_for('rankfile') is True

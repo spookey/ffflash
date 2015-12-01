@@ -1,9 +1,9 @@
+from ffflash.inc.nodelist import handle_nodelist
+from ffflash.inc.sidecars import handle_sidecars
 from ffflash.info import info
 from ffflash.lib.api import FFApi
 from ffflash.lib.args import parsed_args
 from ffflash.lib.files import check_file_location, dump_file, load_file
-from ffflash.inc.nodelist import handle_nodelist
-from ffflash.inc.sidecars import handle_sidecars
 
 
 class FFFlash:
@@ -21,7 +21,7 @@ class FFFlash:
                 self.api = FFApi(c)
 
     def save(self):
-        if (self.api is not None) and self.location:
+        if self.access_for('api'):
             self.api.timestamp()
             return dump_file(self.location, self.api.c, as_yaml=False)
 
@@ -29,6 +29,7 @@ class FFFlash:
         return all([
             (self.api is not None),
             {
+                'api': self.location,
                 'sidecars': self.args.sidecars,
                 'nodelist': self.args.nodelist,
                 'rankfile': (self.args.nodelist and self.args.rankfile),
@@ -49,10 +50,9 @@ class FFFlash:
 
 def run(argv=None):
     ff = FFFlash(parsed_args(argv))
-
     ff.log(info.ident)
 
-    if ff.api is None:
+    if not ff.access_for('api'):
         return not ff.log('Error loading API file', level=False)
 
     modified = [

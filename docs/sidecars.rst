@@ -3,7 +3,7 @@ Sidecars
 
 Use one ore more Sidecars to merge content from there into the APIfile.
 
-Sidecars are either **yaml** or **json** files.
+Sidecars are either *yaml* or *json* files.
 This is determined by the extension in the filename.
 
 The filename is a dot-separated path into the keys of the APIfile.

@@ -1,12 +1,5 @@
-from ffflash.lib.args import parsed_args
-from ffflash.main import FFFlash
-
-
-def test_ffflash_log_non_verbose(tmpdir, capsys):
-    f = FFFlash(parsed_args([
-        str(tmpdir.join('phony_api_file.json')),
-        '-d'
-    ]))
+def test_ffflash_log_non_verbose(tmpdir, capsys, fffake):
+    f = fffake(tmpdir.join('phony_api_file.json'), dry=True)
 
     assert f.log('error message', level=False) is False
     out, err = capsys.readouterr()
@@ -36,12 +29,8 @@ def test_ffflash_log_non_verbose(tmpdir, capsys):
     assert tmpdir.remove() is None
 
 
-def test_ffflash_log_verbose(tmpdir, capsys):
-    f = FFFlash(parsed_args([
-        str(tmpdir.join('phony_api_file.json')),
-        '-v',
-        '-d'
-    ]))
+def test_ffflash_log_verbose(tmpdir, capsys, fffake):
+    f = fffake(tmpdir.join('phony_api_file.json'), dry=True, verbose=True)
 
     assert f.log('error message', level=False) is False
     out, err = capsys.readouterr()
@@ -62,11 +51,8 @@ def test_ffflash_log_verbose(tmpdir, capsys):
     assert tmpdir.remove() is None
 
 
-def test_ffflash_log_level_returns(tmpdir):
-    f = FFFlash(parsed_args([
-        str(tmpdir.join('phony_api_file.json')),
-        '-d'
-    ]))
+def test_ffflash_log_level_returns(tmpdir, fffake):
+    f = fffake(tmpdir.join('phony_api_file.json'), dry=True)
 
     assert f.log('message', level=False) is False
     assert f.log('message', level=None) is None

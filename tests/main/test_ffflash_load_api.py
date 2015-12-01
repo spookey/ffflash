@@ -1,55 +1,52 @@
 from json import dumps
 
-from ffflash.lib.args import parsed_args
-from ffflash.main import FFFlash
 
+def test_ffflash_load_api_this_is_no_json(tmpdir, fffake):
+    apifile = tmpdir.join('phony_api_file.txt')
+    apifile.write_text('this is no json', 'utf-8')
+    assert tmpdir.listdir() == [apifile]
 
-def test_ffflash_load_api_no_json(tmpdir):
-    p = tmpdir.join('phony_api_file.txt')
-    p.write_text('this is no json', 'utf-8')
-    assert tmpdir.listdir() == [str(p)]
-
-    f = FFFlash(parsed_args([str(p), '-d']))
-
+    f = fffake(apifile, dry=True)
     assert f
-    assert f.args.APIfile == str(p)
-    assert f.location == str(p)
 
+    assert f.args.APIfile == str(apifile)
+    assert f.location == str(apifile)
     assert f.api is None
 
     assert tmpdir.remove() is None
 
 
-def test_ffflash_load_api(tmpdir):
-    p = tmpdir.join('phony_api_file.json')
-    api = {'a': 'b'}
-    p.write_text(dumps(api), 'utf-8')
-    assert tmpdir.listdir() == [str(p)]
+def test_ffflash_load_api(tmpdir, fffake):
+    apifile = tmpdir.join('phony_api_file.json')
+    c = {'a': 'b'}
+    apifile.write_text(dumps(c), 'utf-8')
+    assert tmpdir.listdir() == [apifile]
 
-    f = FFFlash(parsed_args([str(p), '-d']))
-
+    f = fffake(apifile, dry=True)
     assert f
 
     assert f.api is not None
+    assert f.api.c == c
     assert f.api.pull('a') == 'b'
 
     assert tmpdir.remove() is None
 
 
-def test_ffflash_reload_api(tmpdir):
-    p = tmpdir.join('phony_api_file.json')
-    api = {'a': 'b'}
-    p.write_text(dumps(api), 'utf-8')
-    assert tmpdir.listdir() == [str(p)]
+def test_ffflash_reload_api(tmpdir, fffake):
+    apifile = tmpdir.join('phony_api_file.json')
+    c = {'a': 'b'}
+    apifile.write_text(dumps(c), 'utf-8')
+    assert tmpdir.listdir() == [apifile]
 
-    f = FFFlash(parsed_args([str(p), '-d']))
-
+    f = fffake(apifile, dry=True)
     assert f
 
     assert f.api is not None
+    assert f.api.c == c
     assert f.api.pull('a') == 'b'
-    assert f.api.push('c', 'a') is None
 
+    assert f.api.push('c', 'a') is None
+    assert f.api.pull('a') == 'c'
     assert f.load_api() is None
     assert f.api.pull('a') != 'b'
     assert f.api.pull('a') == 'c'

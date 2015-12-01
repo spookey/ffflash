@@ -1,7 +1,8 @@
-from urllib import request
 from json import dumps as j_dump
+from urllib import request
 
 from yaml import dump as y_dump
+
 from ffflash.lib.remote import fetch_www_struct
 
 

@@ -1,17 +1,12 @@
-from ffflash.lib.args import parsed_args
-from ffflash.main import FFFlash
-
-
-def test_ffflash_init_apifile_does_not_exist(tmpdir):
-    p = tmpdir.join('phony_api_file.json')
+def test_ffflash_init_empty_apifile(tmpdir, fffake):
+    apifile = tmpdir.join('phony_api_file.json')
     assert tmpdir.listdir() == []
 
-    a = parsed_args([str(p), '-d'])
-    f = FFFlash(a)
+    f = fffake(apifile, dry=True)
 
     assert f
-    assert f.args == a
-    assert f.args.APIfile == str(p)
+    assert f.args
+    assert f.args.APIfile == str(apifile)
     assert f.args.dry is True
     assert f.location is None
     assert f.api is None
@@ -19,19 +14,18 @@ def test_ffflash_init_apifile_does_not_exist(tmpdir):
     assert tmpdir.remove() is None
 
 
-def test_ffflash_init_apifile_does_exist(tmpdir):
-    p = tmpdir.join('phony_api_file.json')
-    p.write_text('does not matter', 'utf-8')
-    assert tmpdir.listdir() == [str(p)]
+def test_ffflash_init_with_apifile(tmpdir, fffake):
+    apifile = tmpdir.join('phony_api_file.json')
+    apifile.write_text('does not matter', 'utf-8')
+    assert tmpdir.listdir() == [apifile]
 
-    a = parsed_args([str(p), '-d'])
-    f = FFFlash(a)
+    f = fffake(apifile, dry=True)
 
     assert f
-    assert f.args == a
-    assert f.args.APIfile == str(p)
+    assert f.args
+    assert f.args.APIfile == str(apifile)
     assert f.args.dry is True
-    assert f.location == str(p)
+    assert f.location == str(apifile)
     assert f.api is None
 
     assert tmpdir.remove() is None

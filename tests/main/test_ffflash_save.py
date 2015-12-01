@@ -1,39 +1,47 @@
 from copy import deepcopy
 from json import dumps, loads
 
-from ffflash.lib.args import parsed_args
-from ffflash.main import FFFlash
 
+def test_ffflash_save(tmpdir, fffake):
+    apifile = tmpdir.join('phony_api_file.json')
+    apifile.write_text(dumps({'a': 'b'}), 'utf-8')
 
-def test_ffflash_save(tmpdir):
-    p = tmpdir.join('phony_api_file.txt')
-    api = {'a': 'b', 'state': {'lastchange': 'never'}}
-    p.write_text(dumps(api), 'utf-8')
-    assert tmpdir.listdir() == [str(p)]
+    assert tmpdir.listdir() == [apifile]
 
-    a = parsed_args([str(p), '-d'])
-
-    f = FFFlash(a)
-
+    f = fffake(apifile, dry=True)
     assert f
-
-    assert f.args.APIfile == str(p)
-    assert f.location == str(p)
+    assert f.args.APIfile == str(apifile)
+    assert f.location == str(apifile)
     assert f.api is not None
 
     old_c = deepcopy(f.api.c)
-
     assert f.api.push('c', 'a') is None
-
     assert loads(f.save()) == f.api.c
 
     assert f.api.c != old_c
 
-    tstamp = f.api.pull('state', 'lastchange')
-    assert tstamp != 'never'
+    assert loads(apifile.read_text('utf-8')) == {'a': 'c'}
 
-    api['a'] = 'c'
-    api['state'].update({'lastchange': tstamp})
-    assert loads(p.read_text('utf-8')) == api
+    assert tmpdir.remove() is None
+
+
+def test_ffflash_save_check_timestamp(tmpdir, fffake):
+    apifile = tmpdir.join('phony_api_file.json')
+    apifile.write_text(dumps({'state': {'lastchange': 'never'}}), 'utf-8')
+
+    assert tmpdir.listdir() == [apifile]
+
+    f = fffake(apifile, dry=True)
+    assert f
+    assert f.api is not None
+    old_t = f.api.pull('state', 'lastchange')
+    assert loads(f.save()) == f.api.c
+
+    new_t = f.api.pull('state', 'lastchange')
+    assert old_t != new_t
+
+    assert loads(
+        apifile.read_text('utf-8')
+    ) == {'state': {'lastchange': new_t}}
 
     assert tmpdir.remove() is None

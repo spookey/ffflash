@@ -1,5 +1,6 @@
-from ffflash.inc.nodelist import _nodelist_count
 from random import choice
+
+from ffflash.inc.nodelist import _nodelist_count
 
 
 def test_nodelist_count_no_nodes_in_nodelist(tmpdir, fffake, capsys):

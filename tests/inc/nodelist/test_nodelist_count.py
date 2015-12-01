@@ -32,7 +32,7 @@ def test_nodelist_count(tmpdir, fffake):
     assert _nodelist_count(ff, {'nodes': [
         _n(c, o) for c, o in dt
     ]}) == (
-        sum([o for c, o in dt]),
+        sum([o for _, o in dt]),
         sum([c for c, o in dt if o])
     )
 

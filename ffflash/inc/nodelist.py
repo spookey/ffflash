@@ -5,6 +5,9 @@ from ffflash.lib.remote import fetch_www_struct
 
 
 def _nodelist_fetch(ff):
+    if not ff.access_for('nodelist'):
+        return False
+
     ff.log('fetching nodelist {}'.format(ff.args.nodelist))
 
     nodelist = (

@@ -19,7 +19,7 @@ class Info:
         self.version = '0.9'
 
         self.name = self.cname.lower()
-        self.release = '{}{}'.format(self.version, 'a4')
+        self.release = '{}{}'.format(self.version, 'a5')
         self.ident = '{} {}'.format(self.name, self.release)
         self.download_url = '{}/archive/{}.tar.gz'.format(
             self.url, self.release

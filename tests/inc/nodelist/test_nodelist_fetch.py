@@ -53,7 +53,7 @@ def test_nodelist_fetch_wrong_format_or_empty(tmpdir, fffake, capsys):
 def test_nodelist_fetch(tmpdir, fffake):
     apifile = tmpdir.join('api_file.json')
     apifile.write_text(dumps({'a': 'b'}), 'utf-8')
-    nodelist = {'version': 1, 'nodes': [None], 'updated_at': 'never'}
+    nodelist = {'version': 0, 'nodes': [], 'updated_at': 'never'}
     nl = tmpdir.join('nodelist.json')
     nl.write_text(dumps(nodelist), 'utf-8')
     assert tmpdir.listdir() == [apifile, nl]

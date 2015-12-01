@@ -49,6 +49,21 @@ def test_parsed_args_rankefile_with_or_without_nodelist():
         assert parsed_args(ta)
 
 
+def test_parsed_args_rank_details():
+    a = vars(parsed_args([F]))
+
+    for t in [
+        'rankclients', 'rankoffline', 'rankonline',
+        'rankposition', 'rankwelcome'
+    ]:
+        sys_ex([F, '--{}'.format(t)])
+        sys_ex([F, '--{}'.format(t), 'test'])
+
+        v = a.get(t)
+        assert isinstance(v, float)
+        assert v > 0
+
+
 def test_parsed_args_valid_options():
     def t(a, nl=None, sc=None, rf=None, d=False, v=False):
         assert a.APIfile == F

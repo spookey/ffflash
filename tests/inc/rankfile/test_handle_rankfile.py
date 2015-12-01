@@ -42,3 +42,39 @@ def test_handle_rankfile_empty_nodelist(tmpdir, fffake):
     assert handle_rankfile(ff, {}) is False
 
     assert tmpdir.remove() is None
+
+
+def test_handle_rankfile_trashy_rankfile(tmpdir, fffake):
+    apifile = tmpdir.join('api_file.json')
+    apifile.write_text(dumps({'a': 'b'}), 'utf-8')
+    nodelist = tmpdir.join('nodelist.json')
+    nodelist.write_text(dumps({'a': 'b'}), 'utf-8')
+    rankfile = tmpdir.join('rankfile.json')
+    rankfile.write_text(dumps({'a': 'b'}), 'utf-8')
+
+    ff = fffake(
+        apifile, nodelist=nodelist,
+        rankfile=rankfile, dry=True
+    )
+
+    assert handle_rankfile(ff, {'a': 'b'}) is False
+
+    assert tmpdir.remove() is None
+
+
+def test_handle_rankfile_trashy_nodelist(tmpdir, fffake):
+    apifile = tmpdir.join('api_file.json')
+    apifile.write_text(dumps({'a': 'b'}), 'utf-8')
+    nodelist = tmpdir.join('nodelist.json')
+    nodelist.write_text(dumps({'a': 'b'}), 'utf-8')
+    rankfile = tmpdir.join('rankfile.json')
+    rankfile.write_text(dumps({'nodes': [], 'updated_at': 'now'}), 'utf-8')
+
+    ff = fffake(
+        apifile, nodelist=nodelist,
+        rankfile=rankfile, dry=True
+    )
+
+    assert handle_rankfile(ff, {'a': 'b'}) is False
+
+    assert tmpdir.remove() is None

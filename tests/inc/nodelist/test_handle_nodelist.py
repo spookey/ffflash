@@ -1,4 +1,4 @@
-from json import dumps
+from json import dumps, loads
 from random import choice
 
 from ffflash.inc.nodelist import handle_nodelist
@@ -40,7 +40,7 @@ def test_handle_nodelist_empty_nodelist(tmpdir, fffake):
     assert handle_nodelist(ff) is False
 
     nl.write_text(dumps({
-        'version': 1, 'nodes': [{}], 'updated_at': 'never'
+        'version': 1, 'nodes': [], 'updated_at': 'never'
     }), 'utf-8')
     ff = fffake(apifile, nodelist=nl, dry=True)
     assert handle_nodelist(ff) is False
@@ -79,12 +79,19 @@ def test_handle_nodelist_launch_rankfile(tmpdir, fffake):
     apifile.write_text(dumps({'a': 'b'}), 'utf-8')
     nl = tmpdir.join('nodelist.json')
     nl.write_text(dumps({
-        'version': 1, 'nodes': [{}], 'updated_at': 'never'
+        'version': 0, 'nodes': [], 'updated_at': 'never'
     }), 'utf-8')
     rf = tmpdir.join('rankfile.json')
 
+    assert tmpdir.listdir() == [apifile, nl]
     ff = fffake(apifile, nodelist=nl, rankfile=rf, dry=True)
 
-    assert handle_nodelist(ff) is False
+    assert handle_nodelist(ff) is True
+    assert tmpdir.listdir() == [apifile, nl, rf]
+
+    res = loads(rf.read_text('utf-8'))
+    assert res
+    assert res.get('nodes') == []
+    assert res.get('updated_at', False) != 'never'
 
     assert tmpdir.remove() is None

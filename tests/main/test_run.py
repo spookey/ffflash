@@ -24,7 +24,7 @@ def test_run_dump_apifile(tmpdir, capsys):
 
     assert run([str(apifile), '-d']) is True
     out, err = capsys.readouterr()
-    assert out.strip().endswith(pformat(c))
+    assert pformat(c) in out
     assert err == ''
 
     assert tmpdir.remove() is None

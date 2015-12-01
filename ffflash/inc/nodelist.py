@@ -25,15 +25,13 @@ def _nodelist_fetch(ff):
     )
     if not nodelist or not isinstance(nodelist, dict):
         return ff.log(
-            'Could not fetch nodelist {}'.format(ff.args.nodelist),
+            'could not fetch nodelist {}'.format(ff.args.nodelist),
             level=False
         )
 
-    if not all([
-        nodelist.get(a) for a in ['version', 'nodes', 'updated_at']
-    ]):
+    if not all([(a in nodelist) for a in ['version', 'nodes', 'updated_at']]):
         return ff.log(
-            'This is no nodelist {}'.format(ff.args.nodelist),
+            'this is no nodelist {}'.format(ff.args.nodelist),
             level=False
         )
 

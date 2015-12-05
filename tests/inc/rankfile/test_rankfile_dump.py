@@ -1,6 +1,7 @@
 from json import dumps, loads
 
 from ffflash.inc.rankfile import _rankfile_dump
+from ffflash.info import info
 
 
 def test_rankfile_dump_no_access(tmpdir, fffake):
@@ -49,5 +50,6 @@ def test_rankfile_dump_data(tmpdir, fffake):
     assert r
     assert r.get('nodes') == rk['nodes']
     assert r.get('updated_at') != 'never'
+    assert r.get('version') == info.release
 
     assert tmpdir.remove() is None

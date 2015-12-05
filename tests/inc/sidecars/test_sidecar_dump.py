@@ -34,7 +34,7 @@ def test_sidecar_dump_but_self_not_existing(tmpdir, fffake):
     assert _sidecar_dump(ff, str(sc), 'c', ['a'], False) is True
 
     assert ff.api.c.get('a') == 'c'
-    assert tmpdir.listdir() == [sc, apifile]
+    assert sorted(tmpdir.listdir()) == sorted([sc, apifile])
     assert loads(sc.read_text('utf-8')) == 'c'
 
     assert tmpdir.remove() is None

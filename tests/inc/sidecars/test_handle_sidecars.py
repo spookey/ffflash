@@ -48,7 +48,7 @@ def test_handle_sidecars_self_not_existing(tmpdir, fffake):
 
     assert handle_sidecars(ff) is True
 
-    assert tmpdir.listdir() == [sc, apifile]
+    assert sorted(tmpdir.listdir()) == sorted([sc, apifile])
 
     assert tmpdir.remove() is None
 
@@ -58,7 +58,7 @@ def test_handle_sidecars_existing_overwrites_api(tmpdir, fffake):
     apifile.write_text(dumps({'a': 'b'}), 'utf-8')
     sc = tmpdir.join('a.json')
     sc.write_text(dumps('c'), 'utf-8')
-    assert tmpdir.listdir() == [sc, apifile]
+    assert sorted(tmpdir.listdir()) == sorted([sc, apifile])
 
     ff = fffake(apifile, sidecars=[sc], dry=True)
 

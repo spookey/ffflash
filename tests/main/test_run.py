@@ -78,7 +78,7 @@ def test_run_apifile_modified(tmpdir):
         '-s', str(side), str(car)
     ]) is False
 
-    assert tmpdir.listdir() == [side, apifile, car, nodelist]
+    assert sorted(tmpdir.listdir()) == sorted([side, apifile, car, nodelist])
 
     assert j_load(side.read_text('utf-8')) == 'b'
     assert y_load(car.read_text('utf-8')) == 'd'

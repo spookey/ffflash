@@ -4,7 +4,7 @@ Some random Links:
 
 :GitHub: |info_url|
 :PyPy: |info_pkg_url|
-:rtfd: |info_doc_url|
+:Read the Docs: |info_doc_url|
 
 |
 

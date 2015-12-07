@@ -3,17 +3,17 @@
 
 :pypy: |info_pkg_url|
 
-Most of the listed requirements are not necessary, only if you are developing.
-The only exception is **PyYAML**.
-
-:meth:`find_requirements` figures out what dependencies are really required.
+Most requirements are not necessary for normal operations, only for developing.
+The most notable exception is **PyYAML**.
 
 .. literalinclude:: ../requirements.txt
     :linenos:
 
+:meth:`find_requirements` figures out what dependencies are required.
+
 To install/update latest version of |info_name|::
 
-    sudo pip3 install -U PyYAML ffflash
+    sudo pip3 install -U ffflash
 
 To install all requirements from a local clone for developing::
 

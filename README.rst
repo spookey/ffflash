@@ -17,8 +17,10 @@ Everything **ffflash** needs to know is passed each time as shell parameters.
 
 -  To get help, use ``ffflash.py -h``::
 
-    usage: ffflash [-h] [-n NODELIST] [-r RANKFILE]
-               [-s SIDECARS [SIDECARS ...]] [-d] [-v]
+    usage: ffflash [-h] [-s SIDECARS [SIDECARS ...]] [-n NODELIST] [-r RANKFILE]
+               [-rc RANKCLIENTS] [-rf RANKOFFLINE] [-rn RANKONLINE]
+               [-rp RANKPOSITION] [-rw RANKWELCOME] [-d] [-v]
+               APIfile
 
 -  You always need to pass the location to your ``APIfile``.
 
@@ -29,6 +31,12 @@ Everything **ffflash** needs to know is passed each time as shell parameters.
 -  Do some number crunching and store the *scores* in the ``--rankfile``.
    (Only works if passed together with an ``--nodelist``).
 
+    -  ``--rankwelcome`` sets the initial *score* to start with.
+    -  ``--rankposition`` increases *score* by that value if any location data is
+       provided.
+    -  ``--rankonline`` increases *score* by that value if node is online.
+    -  ``--rankoffline`` decreases *score* by that value if node is offline.
+    -  ``--rankclients`` increases *score* per client by that value.
 
 -  Pass one or more ``--sidecars`` (or ``-s``) to merge content from there
    into the APIfile.

@@ -5,19 +5,21 @@ FLASH="$CDIR/ffflash.py"
 
 function run()
 {
-    WWWDIR="$1"
-    APIFILE="$2"
-    NODELIST="$3"
+    local WWWDIR="$1"
+    local APIFILE="$2"
+    local NODELIST="$3"
 
     $FLASH \
         "$WWWDIR/$APIFILE" \
-        "-n" "$NODELIST" \
-        "-s" \
+        "--nodelist" "$NODELIST" \
+        "--rankfile" "$WWWDIR/score.json" \
+        "--sidecars" \
             "$WWWDIR/inc/contact.yaml" \
             "$WWWDIR/inc/services.yaml" \
             "$WWWDIR/inc/support.club.yaml" \
             "$WWWDIR/inc/support.donations.campaigns.yaml" \
-            "$WWWDIR/inc/timeline.yaml"
+            "$WWWDIR/inc/timeline.yaml" \
+        "-v"
 
     if [ $? -ne 0 ]; then echo "# error processing $APIFILE"; fi
 }

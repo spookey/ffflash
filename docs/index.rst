@@ -15,13 +15,6 @@ Some random Links:
 Documentation
 =============
 
-Setup
------
-
-.. automodule:: setup
-    :members:
-    :undoc-members:
-
 .. toctree::
    :maxdepth: 3
 
@@ -29,6 +22,14 @@ Setup
    nodelist
    sidecars
    lib
+
+
+Setup
+-----
+
+.. automodule:: setup
+    :members:
+    :undoc-members:
 
 
 Indices and tables

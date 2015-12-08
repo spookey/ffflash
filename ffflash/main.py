@@ -3,6 +3,7 @@ from ffflash.inc.sidecars import handle_sidecars
 from ffflash.info import info
 from ffflash.lib.api import FFApi
 from ffflash.lib.args import parsed_args
+from ffflash.lib.clock import get_iso_timestamp
 from ffflash.lib.files import check_file_location, dump_file, load_file
 
 
@@ -32,6 +33,15 @@ class FFFlash:
             if c:
                 self.api = FFApi(c)
 
+    def set_timestamp(self):
+        '''
+        Inject :meth:`ffflash.lib.clock.get_iso_timestamp`
+        into ``state.lastchange``.
+        '''
+        if self.access_for('api'):
+            if self.api.pull('state', 'lastchange') is not None:
+                self.api.push(get_iso_timestamp(), 'state', 'lastchange')
+
     def save(self):
         '''
         Save content from :attr:`api` (:class:`ffflash.lib.api.FFApi`) into
@@ -39,7 +49,7 @@ class FFFlash:
         A :meth:`ffflash.lib.api.FFApi.timestamp` is triggered before saving.
         '''
         if self.access_for('api'):
-            self.api.timestamp()
+            self.set_timestamp()
             return dump_file(self.location, self.api.c, as_yaml=False)
 
     def access_for(self, name):

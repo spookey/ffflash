@@ -56,19 +56,3 @@ def test_ffapi_pretty():
         {}, {'a': 'b'}, {'a': {'b': 'c'}}, {'a': ['b', 'c']}
     ]:
         assert FFApi(tc).pretty() == pformat(tc)
-
-
-def test_ffapi_timestamp_no_field():
-    raw = {'a': 'b'}
-    f = FFApi(deepcopy(raw))
-    assert f.c == raw
-    f.timestamp()
-    assert f.c == raw
-
-
-def test_ffapi_timestamp():
-    raw = {'a': 'b', 'state': {'lastchange': 23}}
-    f = FFApi(deepcopy(raw))
-    assert f.c == raw
-    f.timestamp()
-    assert f.c != raw

@@ -1,4 +1,3 @@
-from ffflash.lib.clock import get_iso_timestamp
 from pprint import pformat
 from re import search as re_search
 from re import sub as re_sub
@@ -13,6 +12,13 @@ class FFApi:
     '''
     def __init__(self, content):
         self.c = content
+
+    def pretty(self):
+        '''
+        :return str: current content in a human readable way
+            using **pprint.pformat**
+        '''
+        return pformat(self.c)
 
     def pull(self, *fields):
         '''
@@ -41,21 +47,6 @@ class FFApi:
                 if f == fields[-1]:
                     c[f] = value
                 c = c[f]
-
-    def timestamp(self):
-        '''
-        Inject :meth:`ffflash.lib.clock.get_iso_timestamp`
-        into ``state.lastchange``.
-        '''
-        if self.pull('state', 'lastchange') is not None:
-            self.push(get_iso_timestamp(), 'state', 'lastchange')
-
-    def pretty(self):
-        '''
-        :return str: current content in a human readable way
-            using **pprint.pformat**
-        '''
-        return pformat(self.c)
 
 
 def api_descr(rx, replace, text):

@@ -35,6 +35,7 @@ def _nodelist_fetch(ff):
             level=False
         )
 
+    ff.log('successfully fetched nodelist from {}'.format(ff.args.nodelist))
     return nodelist
 
 
@@ -52,11 +53,11 @@ def _nodelist_count(ff, nodelist):
         if node.get('status', {}).get('online', False):
             nodes += 1
             clients += node.get('status', {}).get('clients', 0)
-    ff.log('found {} nodes, {} clients'.format(nodes, clients))
 
     if not all([nodes, clients]):
         ff.log('your nodelist seems to be empty', level=False)
 
+    ff.log('found {} nodes, {} clients'.format(nodes, clients))
     return nodes, clients
 
 
@@ -81,6 +82,7 @@ def _nodelist_dump(ff, nodes, clients):
     modified = []
     if ff.api.pull('state', 'nodes') is not None:
         ff.api.push(nodes, 'state', 'nodes')
+        ff.log('stored {} in state.nodes'.format(nodes))
         modified.append(True)
 
     descr = ff.api.pull('state', 'description')
@@ -90,6 +92,9 @@ def _nodelist_dump(ff, nodes, clients):
             r'(\[[\d]+ Nodes, [\d]+ Clients\])', new, descr
         ) if descr else new)
         ff.api.push(new_descr, 'state', 'description')
+        ff.log('stored {} nodes and {} clients in state.description'.format(
+            nodes, clients
+        ))
         modified.append(True)
 
     return any(modified)

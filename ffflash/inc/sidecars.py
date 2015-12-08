@@ -45,6 +45,7 @@ def _sidecar_path(ff, sc):
             level=False
         ), None, None
 
+    ff.log('sidecar path {} is valid. got {}'.format(sidepath, fields))
     return sidepath, fields, (True if ext == '.yaml' else False)
 
 
@@ -74,6 +75,9 @@ def _sidecar_load(ff, sidepath, fields, as_yaml):
 
     sidecont = load_file(sidepath, as_yaml=as_yaml)
     if sidecont is None:
+        ff.log('sidecar {} does not exit yet. pulled data from api'.format(
+            '.'.join(fields)
+        ))
         return apicont
 
     return merge_dicts(apicont, sidecont)

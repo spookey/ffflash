@@ -60,7 +60,6 @@ def _rankfile_load(ff):
         if lranks == 0 else
         'loaded {} nodes'.format(lranks)
     ))
-
     return rankfile, ranks, as_yaml
 
 
@@ -108,6 +107,7 @@ def _rankfile_score(ff, ranks, nodelist):
             res.append(nr)
 
     ranks['nodes'] = list(sorted(res, key=itemgetter('score'), reverse=True))
+    ff.log('scored {} nodes for rankfile'.format(len(ranks.get('nodes'))))
     return ranks
 
 
@@ -135,6 +135,7 @@ def _rankfile_dump(ff, rankfile, ranks, as_yaml):
     ranks['version'] = info.release
     dump_file(rankfile, ranks, as_yaml=as_yaml)
 
+    ff.log('successfully stored rankfile {}'.format(rankfile))
     return True
 
 

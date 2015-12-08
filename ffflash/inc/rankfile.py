@@ -2,7 +2,7 @@ from operator import itemgetter
 from os import path
 
 from ffflash.info import info
-from ffflash.lib.api import api_timestamp
+from ffflash.lib.clock import get_iso_timestamp
 from ffflash.lib.files import check_file_location, dump_file, load_file
 
 
@@ -131,7 +131,7 @@ def _rankfile_dump(ff, rankfile, ranks, as_yaml):
     ]):
         return ff.log('wrong input data passed', level=False)
 
-    ranks['updated_at'] = api_timestamp()
+    ranks['updated_at'] = get_iso_timestamp()
     ranks['version'] = info.release
     dump_file(rankfile, ranks, as_yaml=as_yaml)
 

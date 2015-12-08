@@ -17,6 +17,15 @@ Args
     :undoc-members:
     :private-members:
 
+Clock
+-----
+
+.. automodule:: ffflash.lib.clock
+    :members:
+    :undoc-members:
+    :private-members:
+
+
 Files
 -----
 

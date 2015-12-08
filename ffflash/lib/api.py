@@ -1,4 +1,4 @@
-from datetime import datetime
+from ffflash.lib.clock import get_iso_timestamp
 from pprint import pformat
 from re import search as re_search
 from re import sub as re_sub
@@ -44,10 +44,11 @@ class FFApi:
 
     def timestamp(self):
         '''
-        Inject :meth:`api_timestamp` into ``state.lastchange``
+        Inject :meth:`ffflash.lib.clock.get_iso_timestamp`
+        into ``state.lastchange``.
         '''
         if self.pull('state', 'lastchange') is not None:
-            self.push(api_timestamp(), 'state', 'lastchange')
+            self.push(get_iso_timestamp(), 'state', 'lastchange')
 
     def pretty(self):
         '''
@@ -55,18 +56,6 @@ class FFApi:
             using **pprint.pformat**
         '''
         return pformat(self.c)
-
-
-def api_timestamp(dt=None):
-    '''
-    Generate iso timestrings
-
-    :param dt: custom ``datetime`` object, or ``now()`` if ``None``
-    :return str: iso representation of ``dt``
-    '''
-    if not dt:
-        dt = datetime.now()
-    return dt.isoformat('T')
 
 
 def api_descr(rx, replace, text):

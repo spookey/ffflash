@@ -1,7 +1,7 @@
 from ffflash.inc.rankfile import handle_rankfile
-from ffflash.lib.api import api_descr
 from ffflash.lib.files import check_file_location, load_file
 from ffflash.lib.remote import fetch_www_struct
+from ffflash.lib.text import replace_text
 
 
 def _nodelist_fetch(ff):
@@ -86,11 +86,10 @@ def _nodelist_dump(ff, nodes, clients):
     descr = ff.api.pull('state', 'description')
     if descr is not None:
         new = '[{} Nodes, {} Clients]'.format(nodes, clients)
-        new_descr = api_descr(
+        new_descr = (replace_text(
             r'(\[[\d]+ Nodes, [\d]+ Clients\])', new, descr
-        ) if descr else new
+        ) if descr else new)
         ff.api.push(new_descr, 'state', 'description')
-
         modified.append(True)
 
     return any(modified)

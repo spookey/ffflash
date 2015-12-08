@@ -1,6 +1,7 @@
 Library
 =======
 
+
 Api
 ---
 
@@ -9,6 +10,7 @@ Api
     :undoc-members:
     :private-members:
 
+
 Args
 ----
 
@@ -16,6 +18,7 @@ Args
     :members:
     :undoc-members:
     :private-members:
+
 
 Clock
 -----
@@ -34,6 +37,7 @@ Files
     :undoc-members:
     :private-members:
 
+
 Remote
 ------
 
@@ -42,10 +46,20 @@ Remote
     :undoc-members:
     :private-members:
 
+
 Struct
 ------
 
 .. automodule:: ffflash.lib.struct
+    :members:
+    :undoc-members:
+    :private-members:
+
+
+Text
+----
+
+.. automodule:: ffflash.lib.text
     :members:
     :undoc-members:
     :private-members:

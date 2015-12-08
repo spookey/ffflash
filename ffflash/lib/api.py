@@ -47,20 +47,3 @@ class FFApi:
                 if f == fields[-1]:
                     c[f] = value
                 c = c[f]
-
-
-def api_descr(rx, replace, text):
-    '''
-    Replace text if rx matches, or leave text unchanged
-
-    :param rx: regex to match on ``text``
-    :param replace: content to put into ``text`` on ``rx``
-    :param text: content to work on
-    :return str: ``text`` with replaced parts, or unchanged ``text``
-    '''
-    match = (
-        False if not (rx and text) else re_search(rx, text)
-    )
-    if match and replace:
-        text = re_sub(rx, replace, text)
-    return text

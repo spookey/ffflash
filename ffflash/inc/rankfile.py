@@ -9,18 +9,17 @@ from ffflash.lib.files import check_file_location, dump_file, load_file
 def _rankfile_load(ff):
     '''
     Load either existing ``rankfile`` from disk, or create empty stub
-    if one does not exist yet. Path and extension (*json* or *yaml*)
+    if one does not exist yet. Path and extension (*json*)
     get validated.
 
     :param ff: running :class:`ffflash.main.FFFlash` instance
-    :return: Tuple of either (``False``, ``None``, ``None``) on error or:
+    :return: Tuple of either (``False``, ``None``) on error or:
 
         * validated path to the ``rankfile``
         * ``rankfile`` content
-        * ``True`` if ``rankfile`` is a *yaml* file, ``False`` if it's *json*
     '''
     if not ff.access_for('rankfile'):
-        return (False, None, None)
+        return (False, None)
     ff.log('handling rankfile {}'.format(ff.args.rankfile))
 
     rankfile = check_file_location(ff.args.rankfile, must_exist=False)
@@ -28,31 +27,30 @@ def _rankfile_load(ff):
         return ff.log(
             'wrong path for rankfile {}'.format(ff.args.rankfile),
             level=False
-        ), None, None
+        ), None
 
     _, ext = path.splitext(rankfile)
-    if not ext or ext.lower() not in ['.yaml', '.json']:
+    if not ext or ext.lower() not in ['.json']:
         return ff.log(
-            'rankfile {} {} is neither json nor yaml'.format(rankfile, ext),
+            'rankfile {} {} is no json'.format(rankfile, ext),
             level=False
-        ), None, None
+        ), None
 
-    as_yaml = True if ext == '.yaml' else False
     ranks = load_file(rankfile, fallback={
         'updated_at': 'never', 'nodes': []
-    }, as_yaml=as_yaml)
+    }, as_yaml=False)
 
     if not ranks or not isinstance(ranks, dict):
         return ff.log(
             'could not load rankfile {}'.format(rankfile),
             level=False
-        ), None, None
+        ), None
 
     if not all([(a in ranks) for a in ['nodes', 'updated_at']]):
         return ff.log(
             'this is no rankfile {}'.format(rankfile),
             level=False
-        ), None, None
+        ), None
 
     lranks = len(ranks.get('nodes', 0))
     ff.log((
@@ -60,7 +58,7 @@ def _rankfile_load(ff):
         if lranks == 0 else
         'loaded {} nodes'.format(lranks)
     ))
-    return rankfile, ranks, as_yaml
+    return rankfile, ranks
 
 
 def _rankfile_score(ff, ranks, nodelist):
@@ -111,7 +109,7 @@ def _rankfile_score(ff, ranks, nodelist):
     return ranks
 
 
-def _rankfile_dump(ff, rankfile, ranks, as_yaml):
+def _rankfile_dump(ff, rankfile, ranks):
     '''
     Store ranks in ``rankfile``. Also sets a timestamp and writes the
     release string into the output.
@@ -119,7 +117,6 @@ def _rankfile_dump(ff, rankfile, ranks, as_yaml):
     :param ff: running :class:`ffflash.main.FFFlash` instance
     :param rankfile: validated path to the ``rankfile``
     :param ranks: content to store
-    :param as_yaml: dump as *yaml* instead of *json*
     :return: ``True`` on success, or ``False`` on error
     '''
     if not ff.access_for('rankfile'):
@@ -127,13 +124,13 @@ def _rankfile_dump(ff, rankfile, ranks, as_yaml):
     if not all([
         rankfile, ranks, isinstance(ranks, dict), all([
             (a in ranks) for a in ['nodes', 'updated_at'] if ranks
-        ]), (as_yaml is not None)
+        ])
     ]):
         return ff.log('wrong input data passed', level=False)
 
     ranks['updated_at'] = get_iso_timestamp()
     ranks['version'] = info.release
-    dump_file(rankfile, ranks, as_yaml=as_yaml)
+    dump_file(rankfile, ranks, as_yaml=False)
 
     ff.log('successfully stored rankfile {}'.format(rankfile))
     return True
@@ -152,12 +149,12 @@ def handle_rankfile(ff, nodelist):
     if not nodelist or not isinstance(nodelist, dict):
         return False
 
-    rankfile, ranks, as_yaml = _rankfile_load(ff)
-    if not all([rankfile, ranks, (as_yaml is not None)]):
+    rankfile, ranks = _rankfile_load(ff)
+    if not all([rankfile, ranks]):
         return False
 
     ranks = _rankfile_score(ff, ranks, nodelist)
     if not ranks:
         return False
 
-    return _rankfile_dump(ff, rankfile, ranks, as_yaml)
+    return _rankfile_dump(ff, rankfile, ranks)

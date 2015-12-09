@@ -19,37 +19,37 @@ BROWSE = python3 -c "import webbrowser; webbrowser.open_new_tab('URL')"
 .cov:
 	$(PYTEST) --cov-report=html --cov=$(FFFLASHDIR) $(TESTDIR)
 
+.test:
+	$(PYTEST) -vss $(TESTDIR)
 
 all: .docs .cov
 clean: .rmdocs .rmcov
 	find . -name '__pycache__' -delete -print -o -name '*.pyc' -delete -print
-call: clean all
+new: clean all
 
 loop: all
 	$(subst MKCMD,all,$(WATCH))
-cloop: call
-	$(subst MKCMD,call,$(WATCH))
+
+
+test: .test
+ltest: test
+	$(subst MKCMD,test,$(WATCH))
 
 
 docs: .docs
-cdocs: .rmdocs .docs
-hdocs: docs
+rmdocs: .rmdocs
+newdocs: .rmdocs .docs
+hdocs: .docs
 	$(subst URL,$(DOCDIR)/_build/html/index.html,$(BROWSE))
-ldocs: docs
+ldocs: .docs
 	$(subst MKCMD,docs,$(WATCH))
-cldocs: cdocs
-	$(subst MKCMD,cdocs,$(WATCH))
+
 
 cov: .cov
-ccov: .rmcov .cov
-hcov: cov
+rmcov: .rmcov
+newcov: .rmcov .cov
+hcov: .cov
 	$(subst URL,$(HTMLCOVDIR)/index.html,$(BROWSE))
-lcov: cov
+lcov: .cov
 	$(subst MKCMD,cov,$(WATCH))
-clcov: ccov
-	$(subst MKCMD,ccov,$(WATCH))
 
-test:
-	$(PYTEST) -vss $(TESTDIR) .
-ltest: test
-	$(subst MKCMD,test,$(WATCH))

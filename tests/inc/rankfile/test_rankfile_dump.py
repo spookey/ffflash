@@ -1,4 +1,5 @@
 from json import dumps, loads
+from pprint import pformat
 
 from ffflash.inc.rankfile import _rankfile_dump
 from ffflash.info import info
@@ -31,7 +32,7 @@ def test_rankfile_dump_wrong_input(tmpdir, fffake):
     assert tmpdir.remove() is None
 
 
-def test_rankfile_dump_data(tmpdir, fffake):
+def test_rankfile_dump_with_dry_option(tmpdir, fffake, capsys):
     apifile = tmpdir.join('api_file.json')
     apifile.write_text(dumps({'a': 'b'}), 'utf-8')
     rf = tmpdir.join('rankfile.json')
@@ -41,6 +42,29 @@ def test_rankfile_dump_data(tmpdir, fffake):
     ff = fffake(
         apifile, nodelist=tmpdir.join('nodelist.json'),
         rankfile=rf, dry=True
+    )
+
+    assert _rankfile_dump(ff, str(rf), rk) is False
+
+    out, err = capsys.readouterr()
+    assert pformat(rk) in out
+    assert err == ''
+
+    assert tmpdir.listdir() == [apifile]
+
+    assert tmpdir.remove() is None
+
+
+def test_rankfile_dump_data(tmpdir, fffake):
+    apifile = tmpdir.join('api_file.json')
+    apifile.write_text(dumps({'a': 'b'}), 'utf-8')
+    rf = tmpdir.join('rankfile.json')
+    rk = {'updated_at': 'never', 'nodes': [{'a': 'b'}, {'c': 'd'}]}
+
+    assert tmpdir.listdir() == [apifile]
+    ff = fffake(
+        apifile, nodelist=tmpdir.join('nodelist.json'),
+        rankfile=rf
     )
 
     assert _rankfile_dump(ff, str(rf), rk) is True

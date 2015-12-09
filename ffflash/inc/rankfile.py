@@ -1,5 +1,6 @@
 from operator import itemgetter
 from os import path
+from pprint import pformat
 
 from ffflash.info import info
 from ffflash.lib.clock import get_iso_timestamp
@@ -130,8 +131,12 @@ def _rankfile_dump(ff, rankfile, ranks):
 
     ranks['updated_at'] = get_iso_timestamp()
     ranks['version'] = info.release
-    dump_file(rankfile, ranks, as_yaml=False)
 
+    if ff.args.dry:
+        ff.log('\n{}'.format(pformat(ranks)), level='rankfile preview')
+        return False
+
+    dump_file(rankfile, ranks, as_yaml=False)
     ff.log('successfully stored rankfile {}'.format(rankfile))
     return True
 
@@ -157,4 +162,10 @@ def handle_rankfile(ff, nodelist):
     if not ranks:
         return False
 
-    return _rankfile_dump(ff, rankfile, ranks)
+    modified = []
+
+    modified.append(
+        _rankfile_dump(ff, rankfile, ranks)
+    )
+
+    return any(modified)

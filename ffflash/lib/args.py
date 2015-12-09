@@ -62,7 +62,10 @@ def parsed_args(argv=None):
         help='show verbose output'
     )
 
-    args = parser.parse_args(argv if argv else _argv[1:])
+    args = parser.parse_args(
+        argv if (argv is not None) else _argv[1:]
+    )
+
     if args.rankfile and not args.nodelist:
         parser.error('argument -r/--rankfile: needs a -n/--nodelist')
     return args

@@ -65,7 +65,9 @@ class FFFlash:
                 'api': self.location,
                 'sidecars': self.args.sidecars,
                 'nodelist': self.args.nodelist,
-                'rankfile': (self.args.nodelist and self.args.rankfile),
+                'rankfile': all([
+                    self.args.nodelist, self.args.rankfile
+                ]),
             }.get(name, False)
         ])
 
@@ -101,19 +103,25 @@ def run(argv=None):
     ff.log(info.ident)
 
     if not ff.access_for('api'):
-        return not ff.log('Error loading API file', level=False)
+        return (not ff.log('error loading API file', level=False))
 
-    modified = [
-        handle_sidecars(ff),
-        handle_nodelist(ff)
-    ]
+    modified = []
+
+    if ff.access_for('sidecars'):
+        modified.append(
+            handle_sidecars(ff)
+        )
+
+    if ff.access_for('nodelist'):
+        modified.append(
+            handle_nodelist(ff)
+        )
 
     if ff.args.dry:
         ff.log('\n{}'.format(ff.api.pretty()), level='API file preview')
     else:
         if any(modified):
-            ff.log('saving api file'.format(
-                ff.save()
-            ))
+            ff.save()
+            ff.log('saved api file')
 
-    return not any(modified)
+    return (not any(modified))

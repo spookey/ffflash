@@ -74,7 +74,7 @@ def test_handle_nodelist_count_some_nodes(tmpdir, fffake):
     assert tmpdir.remove() is None
 
 
-def test_handle_nodelist_launch_rankfile(tmpdir, fffake):
+def test_handle_nodelist_dry_launch_rankfile(tmpdir, fffake):
     apifile = tmpdir.join('api_file.json')
     apifile.write_text(dumps({'a': 'b'}), 'utf-8')
     nl = tmpdir.join('nodelist.json')
@@ -85,6 +85,24 @@ def test_handle_nodelist_launch_rankfile(tmpdir, fffake):
 
     assert tmpdir.listdir() == [apifile, nl]
     ff = fffake(apifile, nodelist=nl, rankfile=rf, dry=True)
+
+    assert handle_nodelist(ff) is False
+
+    assert tmpdir.listdir() == [apifile, nl]
+    assert tmpdir.remove() is None
+
+
+def test_handle_nodelist_launch_rankfile(tmpdir, fffake):
+    apifile = tmpdir.join('api_file.json')
+    apifile.write_text(dumps({'a': 'b'}), 'utf-8')
+    nl = tmpdir.join('nodelist.json')
+    nl.write_text(dumps({
+        'version': 0, 'nodes': [], 'updated_at': 'never'
+    }), 'utf-8')
+    rf = tmpdir.join('rankfile.json')
+
+    assert tmpdir.listdir() == [apifile, nl]
+    ff = fffake(apifile, nodelist=nl, rankfile=rf)
 
     assert handle_nodelist(ff) is True
     assert tmpdir.listdir() == [apifile, nl, rf]

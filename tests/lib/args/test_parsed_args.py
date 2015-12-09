@@ -2,7 +2,9 @@ import pytest
 
 from ffflash.lib.args import parsed_args
 
-F = 'ffapi_test_file.json'
+F = 'test_ffapi.json'
+N = 'test_nodelist.json'
+R = 'test_rankfile.json'
 
 
 def sys_ex(a):
@@ -33,18 +35,15 @@ def test_parsed_args_nodelist_or_sidecars_missing():
 
 
 def test_parsed_args_rankefile_with_or_without_nodelist():
-    N = 'nodelist_test_file.json'
-    R = 'rankfile_test_file.json'
-
     for ta in [
         [F, '-n'], [F, '--nodelist'], [F, '-r'], [F, '--rankfile'],
         [F, '-n', N, '-r'], [F, '--nodelist', N, '--rankfile'],
-        [F, '-r'], [F, '--rankfile', R]
+        [F, '-r'], [F, '--rankfile', R],
     ]:
         sys_ex(ta)
     for ta in [
         [F, '-n', N], [F, '--nodelist', N],
-        [F, '-n', N, '-r', R], [F, '--nodelist', N, '--rankfile', R]
+        [F, '-n', N, '-r', R], [F, '--nodelist', N, '--rankfile', R],
     ]:
         assert parsed_args(ta)
 

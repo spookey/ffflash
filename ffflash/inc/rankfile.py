@@ -64,8 +64,15 @@ def _rankfile_load(ff):
 
 def _rankfile_score(ff, ranks, nodelist):
     '''
+    Do some number crunching.
 
     :param ff: running :class:`ffflash.main.FFFlash` instance
+    :param ranks: rankfile content from :meth:`_rankfile_load`,
+        should contain a list of dictionaries at the key *nodes*
+    :param nodelist: nodelist from
+        :meth:`ffflash.inc.nodelist._nodelist_fetch`, should contain a
+        list of dictionaries at the key *nodes*
+    :return: ``ranks`` with new scores, sorted by score
     '''
     if not ff.access_for('rankfile'):
         return False

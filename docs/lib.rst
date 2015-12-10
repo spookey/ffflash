@@ -38,6 +38,15 @@ Files
     :private-members:
 
 
+Locations
+---------
+
+.. automodule:: ffflash.lib.locations
+    :members:
+    :undoc-members:
+    :private-members:
+
+
 Remote
 ------
 

@@ -12,9 +12,9 @@ def check_file_location(location, must_exist=False):
     not a folder.
     Optionally, if ``location`` is an already existing file.
 
-    :param location: Path to check.
-    :param must_exist: Check also if ``location`` really exists and is a file
-    :return str: Validated path of ``location`` if all above conditions
+    :param location: path to check
+    :param must_exist: check also if ``location`` really exists and is a file
+    :return str: validated path of ``location`` if all above conditions
         are met or ``None``
     '''
     location = path.abspath(location)

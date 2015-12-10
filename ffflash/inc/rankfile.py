@@ -1,10 +1,10 @@
 from operator import itemgetter
 from os import path
-from pprint import pformat
 
 from ffflash.info import info
 from ffflash.lib.clock import get_iso_timestamp
 from ffflash.lib.files import check_file_location, dump_file, load_file
+from ffflash.lib.text import make_pretty
 
 
 def _rankfile_load(ff):
@@ -140,7 +140,7 @@ def _rankfile_dump(ff, rankfile, ranks):
     ranks['version'] = info.release
 
     if ff.args.dry:
-        ff.log('\n{}'.format(pformat(ranks)), level='rankfile preview')
+        ff.log('\n{}'.format(make_pretty(ranks)), level='rankfile preview')
         return False
 
     dump_file(rankfile, ranks, as_yaml=False)

@@ -1,6 +1,4 @@
-from pprint import pformat
-from re import search as re_search
-from re import sub as re_sub
+from ffflash.lib.text import make_pretty
 
 
 class FFApi:
@@ -18,7 +16,7 @@ class FFApi:
         :return str: current content in a human readable way
             using **pprint.pformat**
         '''
-        return pformat(self.c)
+        return make_pretty(self.c)
 
     def pull(self, *fields):
         '''

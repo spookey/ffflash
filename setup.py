@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 |info_cname| is available as package, you can find the newest version here:
 

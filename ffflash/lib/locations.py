@@ -25,5 +25,5 @@ def locate_file(*parts, must_exist=False):
         see :meth:`ffflash.lib.files.check_file_location` for more
     :return: full absolute path to desired file, or ``None`` on error
     '''
-    loc = path.join(get_basedir(), *parts)
-    return check_file_location(loc, must_exist=must_exist)
+    location = path.join(get_basedir(), *parts)
+    return check_file_location(location, must_exist=must_exist)

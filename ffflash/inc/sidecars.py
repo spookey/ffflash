@@ -1,6 +1,4 @@
-from os import path
-
-from ffflash.lib.files import check_file_location, dump_file, load_file
+from ffflash.lib.files import check_file_location, dump_file, load_file, check_file_extension
 from ffflash.lib.struct import merge_dicts
 
 
@@ -28,12 +26,10 @@ def _sidecar_path(ff, sc):
             level=False
         ), None, None
 
-    sidename = path.basename(sidepath)
-    name, ext = path.splitext(sidename)
-
-    if not ext or ext.lower() not in ['.yaml', '.json']:
+    name, ext = check_file_extension(sidepath, 'yaml', 'json')
+    if not all([name, ext]):
         return ff.log(
-            'sidecar {} {} is neither json nor yaml'.format(sc, ext),
+            'sidecar {} is neither json nor yaml'.format(sc),
             level=False
         ), None, None
 

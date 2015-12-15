@@ -29,6 +29,24 @@ def check_file_location(location, must_exist=False):
         return location
 
 
+def check_file_extension(location, *extensions):
+    '''
+    Validate path for a selection of extensions.
+
+    :param location: path to check
+    :param extensions: one or more extensions the ``location`` should end with
+    :return tuple: (basename of ``location``, extension of ``location``) or
+        (``None``, ``None``) if extension did not match
+    '''
+    name, extension = path.splitext(path.basename(location))
+    if extension and (extension.lower() in [
+        ''.join([path.extsep, ext.lstrip(path.extsep).lower()])
+        for ext in extensions
+    ]):
+        return name, extension
+    return None, None
+
+
 def read_file(location, fallback=None):
     '''
     Read string data from files

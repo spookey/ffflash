@@ -1,9 +1,8 @@
 from operator import itemgetter
-from os import path
 
 from ffflash.info import info
 from ffflash.lib.clock import get_iso_timestamp
-from ffflash.lib.files import check_file_location, dump_file, load_file
+from ffflash.lib.files import check_file_location, dump_file, load_file, check_file_extension
 from ffflash.lib.text import make_pretty
 
 
@@ -30,10 +29,9 @@ def _rankfile_load(ff):
             level=False
         ), None
 
-    _, ext = path.splitext(rankfile)
-    if not ext or ext.lower() not in ['.json']:
+    if not all(check_file_extension(rankfile, 'json')):
         return ff.log(
-            'rankfile {} {} is no json'.format(rankfile, ext),
+            'rankfile {} is no json'.format(rankfile),
             level=False
         ), None
 

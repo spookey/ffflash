@@ -1,4 +1,4 @@
-from ffflash.lib.files import check_file_extension
+from ffflash.lib.locations import check_file_extension
 
 
 def test_check_file_extension_no_ext():

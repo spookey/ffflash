@@ -1,4 +1,4 @@
-from ffflash.lib.files import check_file_location
+from ffflash.lib.locations import check_file_location
 
 
 def test_check_file_location_empty():

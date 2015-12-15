@@ -1,4 +1,5 @@
-from ffflash.lib.files import check_file_location, dump_file, load_file, check_file_extension
+from ffflash.lib.files import dump_file, load_file
+from ffflash.lib.locations import check_file_extension, check_file_location
 from ffflash.lib.struct import merge_dicts
 
 

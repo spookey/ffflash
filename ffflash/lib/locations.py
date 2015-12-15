@@ -1,7 +1,5 @@
 from os import path
 
-from ffflash.lib.files import check_file_location
-
 
 def get_basedir():
     '''
@@ -13,6 +11,49 @@ def get_basedir():
     return path.abspath(
         path.dirname(path.dirname(path.dirname(__file__)))
     )
+
+
+def check_file_location(location, must_exist=False):
+    '''
+    Validate path for a file.
+
+    Checks for the parent folder to exist, and that ``location`` itself is
+    not a folder.
+    Optionally, if ``location`` is an already existing file.
+
+    :param location: path to check
+    :param must_exist: check also if ``location`` really exists and is a file
+    :return str: validated path of ``location`` if all above conditions
+        are met or ``None``
+    '''
+    location = path.abspath(location)
+    parent = path.dirname(location)
+    if all([
+        path.isdir(parent),
+        not path.isdir(location),
+        (
+            path.exists(location) and path.isfile(location)
+        ) if must_exist else True
+    ]):
+        return location
+
+
+def check_file_extension(location, *extensions):
+    '''
+    Validate path for a selection of extensions.
+
+    :param location: path to check
+    :param extensions: one or more extensions the ``location`` should end with
+    :return tuple: (basename of ``location``, extension of ``location``) or
+        (``None``, ``None``) if extension did not match
+    '''
+    name, extension = path.splitext(path.basename(location))
+    if extension and (extension.lower() in [
+        ''.join([path.extsep, ext.lstrip(path.extsep).lower()])
+        for ext in extensions
+    ]):
+        return name, extension
+    return None, None
 
 
 def locate_file(*parts, must_exist=False):
